@@ -16,6 +16,7 @@ public/images
 public/css
 public/js
 public/assets/*
+app/assets/public/*
 
 # Temporary files
 .DS_Store
