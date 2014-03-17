@@ -1,0 +1,25 @@
+# Laravel ignores
+/bootstrap/compiled.php
+/vendor
+composer.phar
+composer.lock
+.env.local.php
+.env.php
+
+# Third-party packages 
+public/components*
+bower_components/*
+node_modules/*
+
+# Public
+public/images
+public/css
+public/js
+public/assets/*
+
+# Temporary files
+.DS_Store
+Thumbs.db
+.sass-cache
+.*.swp
+

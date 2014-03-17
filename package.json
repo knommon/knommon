@@ -1,0 +1,24 @@
+{
+  "name": "fish",
+  "version": "0.0.1",
+  "description": "Grunt integration with Laravel",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Laravel",
+    "Grunt"
+  ],
+  "author": "Nick Aversano",
+  "license": "BSD",
+  "devDependencies": {
+    "grunt": "^0.4.3",
+    "grunt-contrib-concat": "^0.3.0",
+    "grunt-contrib-uglify": "^0.4.0",
+    "grunt-contrib-watch": "^0.5.3",
+    "grunt-contrib-compass": "^0.7.2",
+    "matchdep": "^0.3.0",
+    "grunt-contrib-imagemin": "^0.5.0"
+  }
+}

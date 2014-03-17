@@ -1,0 +1,21 @@
+{
+  "name": "fish",
+  "version": "1.0.0",
+  "authors": [
+    "Nick Aversano <nick23hi@gmail.com>"
+  ],
+  "main": "public/css/main.css",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "pure": "~0.4.2",
+    "bootstrap": "~3.1.1"
+  }
+}
