@@ -27,3 +27,9 @@ Route::group(array('before' => 'auth'), function() {
 		// Has Auth Filter
 	});
 });
+
+Route::get('project', function(){
+	return View::make('project/home');
+});
+
+Route::any('project/edit', 'ProjectController@anyEdit');
