@@ -2,112 +2,57 @@
 
 use Illuminate\Support\MessageBag;
 
-class ProjectController extends Controller {
+/* Controller for projects. 
+*  Displays project pages and index page by returning Views
+*  Handles project creation, editing, and deletion too!
+*/
 
-public function anyEdit()
-	{
-		$errors = new MessageBag();
+class ProjectController extends BaseController {
 
-		if ($old = Input::old('errors')) {
-			$errors = $old;
-		}
+public function index(){
+	$projects=Project::all();
+	return View::make('project/index', compact('projects'));
+}
 
-		$data = ['errors' => $errors];
+public function display(Project $project){
+	return View::make('project/home', compact('project'));
+}
 
-		if (Input::server('REQUEST_METHOD') == 'POST') {
-			$validator = Validator::make(Input::all(), [
-				'title' => 'required',
-				'description' => 'required'
-			]);
+public function create(){
+	return View::make('project/create');
+}
 
-			$edits = [
-				'title' => Input::get('title'),
-				'description' => Input::get('description')
-			];
+public function handleCreate(){
+	$project = new Project;
+	$project->title = Input::get('title');
+	$project->about = Input::get('about');
+	$project->save();
+	return Redirect::action('ProjectController@display', $project->id);
+}
 
-			if ($validator->passes() && Auth::attempt($login)) {
-				echo 'SUCCESS!';
-			} else {
-				$data['errors'] = new MessageBag(['password' => 'Invalid username or password.']);
-			}
+public function edit(Project $project){
+	return View::make('project/edit', compact('project'));
+}
 
-			$data['title'] = Input::get('title');
+public function handleEdit(){
+	$project = Project::findOrFail(Input::get('id'));
+	$project->title = Input::get('title');
+	$project->about = Input::get('about');
+	$project->save();
 
-			return Redirect::route('user/login')->withInput($data);
-		}
+	return Redirect::action('ProjectController@display', $project->id);
+}
 
-		return View::make('project/edit', $data);
-	}
-	public function anyLogin()
-	{
-		$errors = new MessageBag();
+public function delete(Project $project){
+	return View::make('project/delete', compact('project'));
+}
 
-		if ($old = Input::old('errors')) {
-			$errors = $old;
-		}
+public function handleDelete(){
+	$id = Input::get('project');
+	$project=Project::findOrFail($id);
+	$project->delete();
 
-		$data = ['errors' => $errors];
+	return Redirect::action('ProjectController@index');
+}
 
-		if (Input::server('REQUEST_METHOD') == 'POST') {
-			$validator = Validator::make(Input::all(), [
-				'email' => 'required',
-				'password' => 'required'
-			]);
-
-			$login = [
-				'email' => Input::get('email'),
-				'password' => Input::get('password')
-			];
-
-			if ($validator->passes() && Auth::attempt($login)) {
-				echo 'SUCCESS!';
-			} else {
-				$data['errors'] = new MessageBag(['password' => 'Invalid username or password.']);
-			}
-
-			$data['email'] = Input::get('email');
-
-			return Redirect::route('user/login')->withInput($data);
-		}
-
-		return View::make('user/login', $data);
-	}
-
-	public function anySignup() {
-		$errors = new MessageBag();
-
-		if ($old = Input::old('errors')) {
-			$errors = $old;
-		}
-
-		$data = ['errors' => $errors];
-
-		if (Input::server('REQUEST_METHOD') == 'POST') {
-			$validator = Validator::make(Input::all(), [
-				'email' => 'required|email',
-				'password' => 'required|min:6'
-			]);
-
-			if ($validator->passes()) {
-
-			} else {
-
-			}
-		}
-
-		return View::make('user/signup', $data);
-	}
-
-	public function getLogout() {
-		Auth::logout();
-		return Redirect::to('/');
-	}
-
-	public function anyRequest() {
-
-	}
-
-	public function anyReset() {
-		
-	}
 }
