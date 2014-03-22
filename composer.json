@@ -4,7 +4,13 @@
 	"keywords": ["framework", "laravel"],
 	"license": "MIT",
 	"require": {
-		"laravel/framework": "4.1.*"
+		"laravel/framework": "4.1.*",
+		"hybridauth/hybridauth": "dev-master",
+		"nesbot/Carbon": "*"
+	},
+	"require-dev": {
+		"darsain/laravel-console": "dev-master",
+		"barryvdh/laravel-debugbar": "1.*"
 	},
 	"autoload": {
 		"classmap": [

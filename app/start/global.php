@@ -1,5 +1,12 @@
 <?php
 
+if (Config::get('app.debug')) {
+	/*Event::listen('illuminate.query', function($query, $bindings, $time, $name){
+		Log::info($query."\n");
+		Log::info(json_encode($bindings)."\n");
+	});*/
+}
+
 /*
 |--------------------------------------------------------------------------
 | Register The Laravel Class Loader
@@ -32,6 +39,7 @@ ClassLoader::addDirectories(array(
 */
 
 Log::useFiles(storage_path().'/logs/laravel.log');
+Log::useFiles(storage_path().'/logs/sql.log');
 
 /*
 |--------------------------------------------------------------------------

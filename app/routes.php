@@ -15,21 +15,15 @@ Route::get('/', function() {
 	return View::make('hello');
 });
 
-Route::get('users', function(){
-	return 'Users!';
-});
-
-//Route::any('user/login', 'UserController@loginAction');
 Route::controller('user', 'UserController');
-
-Route::group(array('before' => 'auth'), function() {
-    Route::get('user/profile', function() {
-		// Has Auth Filter
-	});
-});
+Route::controller('password', 'RemindersController');
+Route::controller('social', 'SocialController', array(
+	'getFacebook' => 'facebook',
+	'getGoogle' => 'google',
+	'getAuth' => 'auth'
+));
 
 Route::get('project', function(){
 	return View::make('project/home');
 });
-
 Route::any('project/edit', 'ProjectController@anyEdit');
