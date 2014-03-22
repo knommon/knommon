@@ -19,15 +19,20 @@ Tap the following PHP repositories, allowing brew to see the packages available 
 `$ brew tap homebrew/dupes`
 
 Laravel requires PHP 5.3.7+ with the mcrypt module.  
-To install a new version of PHP, run `$ brew install php55 php55-mcrypt`.
+To install a new version of PHP, run `$ brew install php55 php55-mcrypt`.  
+You may also configure php with additional options such as `--with-pgsql` for PostgreSQL support.
+For a full list of available extensions, [see this](http://justinhileman.info/article/reinstalling-php-on-mac-os-x/#but-wait-theres-more).
 
 Now, you'll need to add brew's version of php to your path.
 
 In you're ~/.bashrc file, add the following line:  
-`export PATH="$(brew --prefix josegonzalez/php/php55)/bin:$PATH"`
+`export PATH="$(brew --prefix josegonzalez/php/php55)/bin:$PATH"`  
 This will use Homebrew's PHP that we just installed instead of the default version of PHP. Make sure the version of PHP corresponds to the one you installed and your .bash_profile is has `source .bashrc`.
 
 Close the current shell window or re-load the bashrc file (`$ . ~/.bashrc`). Now, check if PHP is setup correctly run `$ php -v`. It should be 5.3.7+. Next, run `$ php -m | grep mcrypt`. This should print out a single line with `mcrypt`, otherwise you still don't have mcrypt installed.
+
+Install PostgreSQL. See [this install guide](http://stackoverflow.com/questions/61747/installing-pdo-drivers-for-postgresql-on-mac-using-zend-for-eclipse).  
+Make sure you add the extension to your php.ini file.
 
 Next install [composer](https://getcomposer.org/doc/00-intro.md#globally) globally, a PHP dependency manager.  
 `$ curl -sS https://getcomposer.org/installer | php`  
@@ -55,17 +60,25 @@ Bower frontend package manager.
 
 With the required pacakges installed, `cd` into the project directory.
 
-First, you'll need to download the required PHP packages with composer. 
+First, you'll need to download the required PHP packages with composer.  
 `$ composer install`  
 After that completes, install Node dependencies.  
 `$ npm install`  
-Finally, some frontend packages.  
+Finally, some frontend dependencies.  
 `$ bower install`
 
 Run `$ sudo make`.
 
 Now you'll need to compile the CSS, Sprite & Javascript.  
 `$ grunt make`
+
+Database setup. Edit app/config/database.php and modify it to include your database settings. Do not modify default.database.php.
+
+Create the migrations table. `php artisan migrate:install`
+
+Next, to create the database tables, run `php artisan migrate`.
+
+If you're unsure, run `php artisan migrate --pretend` to see what the migrate command will do. Read more about migrations [here](http://daylerees.com/codebright/migrations).
 
 ## Dev Workflow
 

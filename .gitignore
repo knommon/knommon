@@ -6,6 +6,10 @@ composer.lock
 .env.local.php
 .env.php
 
+# Environment-dependent files
+app/config/database.php
+app/config/mail.php
+
 # Third-party packages 
 public/components*
 bower_components/*
@@ -17,6 +21,7 @@ public/css
 public/js
 public/assets/*
 app/assets/public/*
+public/packages/
 
 # Temporary files
 .DS_Store

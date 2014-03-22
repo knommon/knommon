@@ -3,6 +3,11 @@
         Options -MultiViews
     </IfModule>
 
+	<IfModule mod_speling.c>
+		CheckCaseOnly On
+		CheckSpelling On
+	</IfModule>IfModule>
+
     RewriteEngine On
 
     # Redirect Trailing Slashes...

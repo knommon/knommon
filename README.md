@@ -14,13 +14,20 @@ See [INSTALL.md](https://github.com/knommon/knommon/blob/master/INSTALL.md).
 
 ## Laravel Documentation
 
+Checkout this [handy Laravel cheatsheet](http://cheats.jesse-obrien.ca/).
+
 Documentation for the entire framework can be found on the [Laravel website](http://laravel.com/docs).
 
-Social Auth:
-https://github.com/Vinelab/social-auth  
-https://github.com/CodeSleeve/social  
-https://bitbucket.org/cerbero/oauth  
+Caching:  
+Redis / Varnish / Memcached?  
+https://github.com/TheMonkeys/laravel-blade-cache-filter
 
+Deploying:  
 http://code.tutsplus.com/tutorials/deploying-a-laravel-application-using-capistrano--net-35685
 
 http://rocketeer.autopergamene.eu/#toc23
+
+@todo, see different environments:
+http://laravel.com/docs/configuration#environment-configuration
+
+http://chrishayes.ca/blog/code/laravel-4-setting-utilizing-environments-environment-configuration

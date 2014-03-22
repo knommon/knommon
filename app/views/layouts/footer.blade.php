@@ -1,5 +1,3 @@
 @section('footer')
-	<div class="footer">
-		Footer text
-	</div>
+	Footer text
 @show

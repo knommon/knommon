@@ -16,13 +16,17 @@
 	@show
 </head>
 <body>
-	@include('layouts/header')
+	<div class="header">
+		@include('layouts/header')
+	</div>
 	<div class="content">
 		<div class="container">
 			@yield('content')
 		</div>
 	</div>
-	@include('layouts/footer')
+	<div class="footer">
+		@include('layouts/footer')
+	</div>
 	@section('scripts')
 	@show
 </body>
