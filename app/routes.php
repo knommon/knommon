@@ -18,7 +18,6 @@ for the corresponding project and pass it as a parameter to the controller
 Route::model('project','Project');
 Route::model('resource','Resource');
 
-
 //default to a list of projects for now - search to come
 Route::get('/', 'ProjectController@index');
 
