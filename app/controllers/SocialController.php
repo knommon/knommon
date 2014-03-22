@@ -49,10 +49,10 @@ class SocialController extends Controller {
 			$providerName = ucfirst($providerName);
 
 			//check if a social account exists in the database
-			$result = DB::table('accounts')->select('user_id', 'access_token', 'expires_at')
+			$result = DB::table('accounts')->select('id', 'user_id')
 				->where('provider_uid', '=', $identifier)
 				->where('provider', '=', $providerName)
-				->get();
+				->take(1)->first();
 
 			$id;
 			//couldn't find an account in the database
@@ -74,43 +74,16 @@ class SocialController extends Controller {
 				}
 				$id = $user->id;
 
-				//create new social account with the current user's profile
-				$gender = empty($profile->gender) ? null : substr($profile->gender, 0, 1);
-				$birthday = null;
-				if ($profile->birthMonth != 0 && $profile->birthDay != 0 && $profile->birthYear != 0) {
-					$birthday = date('Y-m-d', mktime(0, 0, 0, $profile->birthMonth, $profile->birthDay, $profile->birthYear));
-				}
-				$expires_at = date('Y-m-d H:i:s', $token['expires_at']);
-
-				DB::table('accounts')->insert(array(
-					'user_id' => $id,
-					'provider' => $providerName,
-					'provider_uid' => $identifier,
-					'first_name' => $profile->firstName,
-					'last_name' => $profile->lastName,
-					'email' => $profile->email,
-					'gender' => $gender,
-					'profile_url' => $profile->profileURL,
-					'photo_url' => $profile->photoURL,
-					'website_url' => $profile->webSiteURL,
-					'language' => $profile->language,
-					'birthday' => $birthday,
-					'address' => $profile->address,
-					'country' => $profile->country,
-					'region' => $profile->region,
-					'city' => $profile->city,
-					'zip' => $profile->zip,
-					'access_token' => $token['access_token'],
-					'expires_at' => $expires_at,
-				));
+				$this->createAccount($profile, $token);
 			} else {
 				$id = $result->user_id;
 				//update social account credentials
-				$result = DB::table('accounts')->where('user_id', '=', $id)
+				$result = DB::table('accounts')
+					->where('id', '=', $result->id)
 					->update(array(
-							'access_token' => $token['access_token'],
-							'expires_at' => $token['expires_at']
-						));
+						'access_token' => $token['access_token'],
+						'expires_at' => $token['expires_at']
+					));
 			}
 			
 			Auth::loginUsingId($id);
@@ -149,5 +122,37 @@ class SocialController extends Controller {
 
 			return Redirect::to('user/login')->withErrors($errors);
 		}
+	}
+
+	//create new social account with the given user's profile and access token
+	protected function createAccount($profile, $token) {
+		$gender = empty($profile->gender) ? null : substr($profile->gender, 0, 1);
+		$birthday = null;
+		if ($profile->birthMonth != 0 && $profile->birthDay != 0 && $profile->birthYear != 0) {
+			$birthday = date('Y-m-d', mktime(0, 0, 0, $profile->birthMonth, $profile->birthDay, $profile->birthYear));
+		}
+		$expires_at = date('Y-m-d H:i:s', $token['expires_at']);
+
+		return DB::table('accounts')->insert(array(
+			'user_id' => $id,
+			'provider' => $providerName,
+			'provider_uid' => $identifier,
+			'first_name' => $profile->firstName,
+			'last_name' => $profile->lastName,
+			'email' => $profile->email,
+			'gender' => $gender,
+			'profile_url' => $profile->profileURL,
+			'photo_url' => $profile->photoURL,
+			'website_url' => $profile->webSiteURL,
+			'language' => $profile->language,
+			'birthday' => $birthday,
+			'address' => $profile->address,
+			'country' => $profile->country,
+			'region' => $profile->region,
+			'city' => $profile->city,
+			'zip' => $profile->zip,
+			'access_token' => $token['access_token'],
+			'expires_at' => $expires_at,
+		));
 	}
 }
