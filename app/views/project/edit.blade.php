@@ -1,24 +1,22 @@
 @extends('layouts/main')
 
 @section('content')
-	{{ Form::open(['url' => 'project/edit', 'autocomplete' => 'off', 'class' => 'pure-form pure-form-stacked']) }}
+	<div class="page-header">
+        <h1>Edit Your Project <small>and stay up to date</small></h1>
+    </div>
 
-	{{-- If there are errors, show them here --}}
-	@if ($error = $errors->first('password'))
-	<div class="error">
-		{{ $error }}
-	</div>
-	@endif
 
-	{{ Form::label('title', 'Project Title') }}
-	{{ Form::text('title', Input::old('title'), ['placeholder' => 'My New Project', 'class' => 'pure-input-1']) }}
-	{{ Form::label('description', 'Project Description') }}
-	{{ Form::password('description', ['placeholder' => 'I am working on a project to...', 'class' => 'pure-input-1']) }}
-	{{ Form::submit('Save', ['class' => 'pure-button pure-button-primary pure-input-1']) }}
-
-	{{ Form::close() }}
-@stop
-
-@section('scripts')
-	<script src="//polyfill.io"></script>
+    <form action="{{ action('ProjectController@handleEdit') }}" method="post" role="form">
+    <input type="hidden" name="id" value="{{ $project->id }}">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" name="title" value="{{ $project->title }}"  />
+        </div>
+        <div class="form-group">
+            <label for="about">About</label>
+            <input type="text" class="form-control" name="about" value="{{ $project->about }}" />
+        </div>
+        <input type="submit" value="Save" class="btn btn-primary" />
+        <a href="{{ action('ProjectController@index') }}" class="btn btn-link">Cancel</a>
+    </form>
 @stop

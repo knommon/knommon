@@ -1,3 +1,3 @@
 @section('footer')
-	Footer text
+	<!--footer with important notices, sticks to bottom -->
 @show
