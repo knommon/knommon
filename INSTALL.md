@@ -89,6 +89,23 @@ Typically when developing, it's handy to have grunt running and polling for chan
 
 Also, for instant browser refreshing, install the Chrome extension [LiveReload](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en).
 
+## Git Workflow
+
+Do *not* use git pull. Instead use *git up*. To create this command, run the following: `git config --global alias.up "!git remote update -p; git merge --ff-only @{u}"`
+
+A typical git workflow looks like this:  
+On branch *dev*. 
+`git checkout master`  
+`git up` fetch the latest changes  
+`git checkout dev`  
+`git rebase master` apply new changes to our dev branch, then apply our commits to dev  
+make sure there are no merge conflicts, fix them and run `git rebase --continue`  
+`git checkout master`  
+`git merge dev` Merge our newest changes into master  
+`git push` push changes to the server  
+
+*Never commit directly to master!* Always do work in a seperate dev branch.
+
 ## All Done!
 
 You're all set, happy developing!

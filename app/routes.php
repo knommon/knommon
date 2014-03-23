@@ -21,7 +21,6 @@ Route::model('resource','Resource');
 //default to a list of projects for now - search to come
 Route::get('/', 'ProjectController@index');
 
-
 Route::controller('user', 'UserController');
 Route::controller('password', 'RemindersController');
 Route::controller('social', 'SocialController', array(
@@ -30,7 +29,7 @@ Route::controller('social', 'SocialController', array(
 	'getAuth' => 'auth'
 ));
 
-
+//@todo: look into cleaning these up, see Route::resource as a potential solution (http://laravel.com/docs/controllers#resource-controllers).
 //project routes - send it to the controller to show pages
 Route::get('/projects', 'ProjectController@index');
 Route::get('/projects/create', 'ProjectController@create');
