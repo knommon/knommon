@@ -6,7 +6,7 @@
     </div>
 
 
-    <form action="{{ action('ResourceController@handleEdit') }}" method="post" role="form">
+    <form action="{{ action('ResourceController@postEdit') }}" method="post" role="form">
     <input type="hidden" name="id" value="{{ $resource->id }}">
         <div class="form-group">
             <label for="name">Name</label>
@@ -21,6 +21,6 @@
             <input type="text" class="form-control" name="about" value="{{ $resource->about }}" />
         </div>
         <input type="submit" value="Save" class="btn btn-primary" />
-        <a href="{{ action('ProjectController@index') }}" class="btn btn-link">Cancel</a>
+        <a href="{{ action('ProjectController@getIndex') }}" class="btn btn-link">Cancel</a>
     </form>
 @stop

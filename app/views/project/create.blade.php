@@ -4,9 +4,7 @@
 	<div class="page-header">
         <h1>Create A New Project <small>and get working</small></h1>
     </div>
-
-
-    <form action="{{ action('ProjectController@handleCreate') }}" method="post" role="form">
+    <form action="{{ action('ProjectController@postCreate') }}" method="post" role="form">
         <div class="form-group">
             <label for="title">Title</label>
             <input type="text" class="form-control" name="title" />
@@ -16,6 +14,6 @@
             <input type="text" class="form-control" name="about" />
         </div>
         <input type="submit" value="Create" class="btn btn-primary" />
-        <a href="{{ action('ProjectController@index') }}" class="btn btn-link">Cancel</a>
+        <a href="{{ action('ProjectController@getIndex') }}" class="btn btn-link">Cancel</a>
     </form>
 @stop

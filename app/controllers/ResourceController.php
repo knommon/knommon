@@ -1,62 +1,104 @@
 <?php
 
-use Illuminate\Support\MessageBag;
+class ResourceController extends \BaseController {
 
-/* Controller for resources.
-*  Displays resource pages and index page by returning Views
-*  Handles resource creation, editing, and deletion too!
-*/
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function getIndex()
+	{
+		$resources=Resource::all();
+		return View::make('resource/index', compact('resources'));
+	}
 
-class ResourceController extends BaseController {
-public function index(){
-	$resources=Resource::all();
-	return View::make('resource/index', compact('resources'));
-}
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function getCreate()
+	{
+		return View::make('resource/create');
+	}
 
-public function display(Resource $resource){
-	return View::make('resource/home', compact('resource'));
-}
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function postCreate()
+	{
+		$resource = new Resource;
+		$resource->name = Input::get('name');
+		$resource->url = Input::get('url');
+		$resource->about = Input::get('about');
+		$resource->type = 'DEFAULT'; //haven't figured out resource types yet -- maybe just tags? We'll talk
+		$resource->save();
 
-public function add(){
-	return View::make('resource/create');
-}
+	return Redirect::action('ResourceController@getResource', $resource->id);
+	}
 
-public function edit(Resource $resource){
-	return View::make('resource/edit', compact('resource'));
-}
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function getResource($id)
+	{
+		$resource = Resource::findOrFail($id);
+		return View::make('resource/show', compact('resource'));
+	}
 
-public function delete(Resource $resource){
-	return View::make('resource/delete', compact('resource'));
-}
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function getEdit($id)
+	{
+		$resource = Resource::findOrFail($id);
+		return View::make('resource/edit', compact('resource'));
+	}
 
-public function handleAdd(){
-	$resource = new Resource;
-	$resource->name = Input::get('name');
-	$resource->url = Input::get('url');
-	$resource->about = Input::get('about');
-	$resource->type = 'DEFAULT'; //haven't figured out resource types yet -- maybe just tags? We'll talk
-	$resource->save();
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function postEdit()
+	{
+		$resource = Resource::findOrFail(Input::get('id'));
+		$resource->name = Input::get('name');
+		$resource->url = Input::get('url');
+		$resource->about = Input::get('about');
+		//type?????
+		$resource->save();
 
-	return Redirect::action('ResourceController@display', $resource->id);
-}
+		return Redirect::action('ResourceController@getResource', $resource->id);
+	}
 
-public function handleEdit(){
-	$resource = Resource::findOrFail(Input::get('id'));
-	$resource->name = Input::get('name');
-	$resource->url = Input::get('url');
-	$resource->about = Input::get('about');
-	//type?????
-	$resource->save();
+	public function getDelete($id){
+		$resource = Resource::findOrFail($id);
+		return View::make('resource/delete', compact('resource'));
+	}
 
-	return Redirect::action('ResourceController@display', $resource->id);
-}
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function postDelete()
+	{
+		$id = Input::get('resource');
+		$resource = Resource::findOrFail($id);
+		$resource->delete();
 
-public function handleDelete(){
-	$id = Input::get('resource');
-	$resource = Resource::findOrFail($id);
-	$resource->delete();
-
-	return Redirect::action('ResourceController@index');
-}
+		return Redirect::action('ResourceController@getIndex');
+	}
 
 }

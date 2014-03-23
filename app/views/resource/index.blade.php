@@ -9,7 +9,7 @@
 
  <div class="panel panel-default">
         <div class="panel-body">
-            <a href="{{ url('/resources/add') }}" class="btn btn-primary">Add a Resource</a>
+            <a href="{{ url('/resources/create') }}" class="btn btn-primary">Add a Resource</a>
         </div>
     </div>
 
@@ -32,9 +32,9 @@
                     <td><a href="{{ $resource->url }}" class="btn btn-primary">Check it out!</td>
                     <td>{{ $resource->updated_at }}</td>
                     <td>
-                        <a href="{{ action('ResourceController@edit', $resource->id) }}" class="btn btn-default">Edit</a>
-                        <a href="{{ action('ResourceController@delete', $resource->id) }}" class="btn btn-danger">Delete</a>
-                        <a href="{{ action('ResourceController@display', $resource->id) }}" class="btn btn-default">View</a>
+                        <a href="{{ action('ResourceController@getEdit', $resource->id) }}" class="btn btn-default">Edit</a>
+                        <a href="{{ action('ResourceController@getDelete', $resource->id) }}" class="btn btn-danger">Delete</a>
+                        <a href="{{ action('ResourceController@getResource', $resource->id) }}" class="btn btn-default">View</a>
                     </td>
                 </tr>
                 @endforeach

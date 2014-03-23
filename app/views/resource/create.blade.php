@@ -6,7 +6,7 @@
     </div>
 
 
-    <form action="{{ action('ResourceController@handleAdd') }}" method="post" role="form">
+    <form action="{{ action('ResourceController@postCreate') }}" method="post" role="form">
         <div class="form-group">
             <label for="name">Name</label>
             <input type="text" class="form-control" name="name" />
@@ -20,7 +20,7 @@
             <input type="text" class="form-control" name="about" />
         </div>
         <input type="submit" value="Create" class="btn btn-primary" />
-        <a href="{{ action('ResourceController@index') }}" class="btn btn-link">Cancel</a>
+        <a href="{{ action('ResourceController@getIndex') }}" class="btn btn-link">Cancel</a>
     </form>
 @stop
 

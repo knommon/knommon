@@ -32,9 +32,9 @@
                     <td>{{ $project->about }}</td>
                     <td>{{ $project->updated_at }}</td>
                     <td>
-                        <a href="{{ action('ProjectController@edit', $project->id) }}" class="btn btn-default">Edit</a>
-                        <a href="{{ action('ProjectController@delete', $project->id) }}" class="btn btn-danger">Delete</a>
-                        <a href="{{ action('ProjectController@display', $project->id) }}" class="btn btn-default">View</a>
+                        <a href="{{ action('ProjectController@getEdit', $project->id) }}" class="btn btn-default">Edit</a>
+                        <a href="{{ action('ProjectController@getDelete', $project->id) }}" class="btn btn-danger">Delete</a>
+                        <a href="{{ action('ProjectController@getProject', $project->id) }}" class="btn btn-default">View</a>
                     </td>
                 </tr>
                 @endforeach

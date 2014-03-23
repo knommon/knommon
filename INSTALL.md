@@ -72,7 +72,15 @@ Run `$ sudo make`.
 Now you'll need to compile the CSS, Sprite & Javascript.  
 `$ grunt make`
 
-Database setup. Edit app/config/database.php and modify it to include your database settings. Do not modify default.database.php.
+Database setup. Edit app/config/database.php and modify it to include your database settings. If you don't know your database settings, you should learn them! If you don't know database stuff at all:
+$ mysql -u root     // run the database program as root so you have necessary permissions
+mysql> create database my_database
+mysql> use my_database
+mysql> quit
+
+Then go to app/config/database.php and edit the connection so that the default database is 'my_database'
+
+) Do not modify default.database.php. 
 
 Create the migrations table. `php artisan migrate:install`
 
@@ -109,3 +117,40 @@ make sure there are no merge conflicts, fix them and run `git rebase --continue`
 ## All Done!
 
 You're all set, happy developing!
+
+
+## Git Workflow
+
+You probably got the master package from github and got push permissions from someone already, but talk to someone on the dev team if that doesn't ring a bell.
+
+First run $ git config --global alias.up "git status remote update -p; git merge --ff-only @{u}"
+This adds a new git command `$ git up` which is safer than the standard git pull
+
+DON'T DEVELOP IN MASTER. Checkout another branch so that if you mess anything up, you are safe. 
+$ git checkout -b my_branch 
+or whatever you want to call your branch
+
+Then you do whatever - create files, edit files, make and destroy folders, mostly in knommon/app. Do your thing.
+Once you have a good chunk done:
+
+$ git checkout master
+$ git up
+$ git checkout my_branch (or whatever your branch was called)
+$ git rebase master
+--> if there are merge conflicts, fix them! That means go into the file indicated, change it to what it should be, and add it. Then, 
+$ git rebase --continue
+$ git checkout master
+$ git merge my_branch
+$ git push
+
+
+
+
+
+
+
+
+
+
+
+

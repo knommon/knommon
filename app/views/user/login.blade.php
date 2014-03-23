@@ -29,8 +29,8 @@
 		{{ Form::submit('Sign In', ['class' => 'pure-button pure-button-primary pure-input-1']) }}
 
 	{{ Form::close() }}
-	<a href="{{ URL::route('facebook') }}">Login with Facebook</a>
-	<a href="{{ URL::route('google') }}">Login with Google</a>
+	<a href="{{ URL::route('facebook') }}" class="btn btn-default">Login with Facebook</a>
+	<a href="{{ URL::route('google') }}" class="btn btn-default">Login with Google</a>
 @stop
 
 @section('scripts')
