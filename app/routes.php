@@ -13,6 +13,7 @@ Route::controller('social', 'SocialController', array(
 ));
 
 // Project & Resource routes
-Route::controller('projects', 'ProjectController');
-Route::controller('resources', 'ResourceController');
-
+Route::resource('projects', 'ProjectController');
+Route::resource('resources', 'ResourceController');
+Route::get('projects/confirm/{id}', 'ProjectController@confirm');
+Route::get('resources/confirm/{id}', 'ResourceController@confirm');

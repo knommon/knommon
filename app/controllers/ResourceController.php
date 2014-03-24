@@ -1,52 +1,44 @@
 <?php
 
-class ResourceController extends \BaseController {
+/**
+ * @todo: add user permissions for Resources
+ */
+class ResourceController extends Controller {
+
+	public function __construct() {
+		// for the user to be logged in to perform any action except view
+		$this->beforeFilter('auth', array('except' => array('index', 'show')));
+	}
 
 	/**
 	 * Display a listing of the resource.
-	 *
-	 * @return Response
 	 */
-	public function getIndex()
-	{
-		$resources=Resource::all();
+	public function index() {
+		$resources = Resource::all();
 		return View::make('resource/index', compact('resources'));
 	}
 
 	/**
 	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
 	 */
-	public function getCreate()
-	{
+	public function create() {
 		return View::make('resource/create');
 	}
 
 	/**
 	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
+	 * @method POST
+	 * @precondition user is logged in
 	 */
-	public function postCreate()
-	{
-		$resource = new Resource;
-		$resource->name = Input::get('name');
-		$resource->url = Input::get('url');
-		$resource->about = Input::get('about');
-		$resource->type = 'DEFAULT'; //haven't figured out resource types yet -- maybe just tags? We'll talk
-		$resource->save();
-
-	return Redirect::action('ResourceController@getResource', $resource->id);
+	public function store() {
+		return $this->attemptEdit(new Resource(), true);
 	}
 
 	/**
 	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
+	 * @param int $id resource id
 	 */
-	public function getResource($id)
+	public function show($id)
 	{
 		$resource = Resource::findOrFail($id);
 		return View::make('resource/show', compact('resource'));
@@ -54,11 +46,8 @@ class ResourceController extends \BaseController {
 
 	/**
 	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
 	 */
-	public function getEdit($id)
+	public function edit($id)
 	{
 		$resource = Resource::findOrFail($id);
 		return View::make('resource/edit', compact('resource'));
@@ -66,39 +55,65 @@ class ResourceController extends \BaseController {
 
 	/**
 	 * Update the specified resource in storage.
-	 *
-	 * @return Response
+	 * @method PUT
 	 */
-	public function postEdit()
+	public function update($id)
 	{
-		$resource = Resource::findOrFail(Input::get('id'));
-		$resource->name = Input::get('name');
-		$resource->url = Input::get('url');
-		$resource->about = Input::get('about');
-		//type?????
-		$resource->save();
-
-		return Redirect::action('ResourceController@getResource', $resource->id);
+		$resource = Resource::findOrFail($id);
+		return $this->attemptEdit($resource, false);
 	}
 
-	public function getDelete($id){
+	/**
+	 * Show the delete confirmation page.
+	 * @param int $id resource id
+	 */
+	public function confirm($id)
+	{
 		$resource = Resource::findOrFail($id);
 		return View::make('resource/delete', compact('resource'));
 	}
 
 	/**
 	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
+	 * @method DELETE
 	 */
-	public function postDelete()
+	public function destroy($id)
 	{
 		$id = Input::get('resource');
 		$resource = Resource::findOrFail($id);
 		$resource->delete();
 
-		return Redirect::action('ResourceController@getIndex');
+		return Redirect::action('ResourceController@index')
+			->with('status', "Resource {$resource->title} successfully deleted!");
 	}
 
+	/**
+	 * @todo: sanitize input
+	 * Attemps to commit the edits on the resource in Input, or returns to fail action
+	 * @param  Reource $resource   The project resource to modify
+	 * @param  boolean $create     If we're creating, false for editing
+	 */
+	protected function attemptEdit(Resource $resource, $create = false)
+	{
+		$validator = Validator::make(Input::all(), ['name' => 'required', 'body' => 'required']);
+
+		if ($validator->fails()) {
+			$redirect = ($create) ? Redirect::action('ResourceController@create') : Redirect::action('ResourceController@edit', $resource->id);
+			return $redirect->withInput(Input::all())->withErrors($validator);
+		}
+
+		$resource->name = Input::get('name');
+		$resource->url = Input::get('url');
+		$resource->body = e(Input::get('body'));
+		$resource->type = 'Null';
+
+		if ($create) {
+			$resource->user_id = Auth::user()->id;
+		}
+
+		$resource->save();
+		
+		return Redirect::action('ResourceController@show', $resource->id)
+			->with('status', "Resource {$resource->name} " . ($create ? 'created' : 'updated') . " successfully!");
+	}
 }

@@ -4,16 +4,23 @@
 	<div class="page-header">
         <h1>Create A New Project <small>and get working</small></h1>
     </div>
-    <form action="{{ action('ProjectController@postCreate') }}" method="post" role="form">
+
+    {{ Form::open(array('url' => action('ProjectController@store'), 'method' => 'post' )) }}
         <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" class="form-control" name="title" />
+            <input type="text" class="form-control" name="title" value="{{ Input::old('title') }}"/>
+            @if ($error = $errors->first('title'))
+                <div class="error"> {{ $error }} </div>
+            @endif
         </div>
         <div class="form-group">
             <label for="about">About</label>
-            <input type="text" class="form-control" name="about" />
+            <textarea class="form-control" name="about">{{ Input::old('about') }}</textarea>
+            @if ($error = $errors->first('about'))
+                <div class="error"> {{ $error }} </div>
+            @endif
         </div>
         <input type="submit" value="Create" class="btn btn-primary" />
-        <a href="{{ action('ProjectController@getIndex') }}" class="btn btn-link">Cancel</a>
-    </form>
+        <a href="{{ action('ProjectController@index') }}" class="btn btn-link">Cancel</a>
+    {{ Form::close() }}
 @stop

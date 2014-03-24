@@ -25,12 +25,12 @@ class ProjectResourceTask extends Migration {
 			$table->timestamps();
 		});
 
-		Schema::create('resources', function($table){
+		Schema::create('resources', function($table) use ($resource_types, $type) {
 			$table->increments('id');
 			$table->unsignedInteger('user_id');
 			$table->foreign('user_id')->references('id')->on('users');
 			$table->string('name');
-			if ($type == 'pgsql') {
+			if ($type != 'pgsql') {
 				$table->enum('type', $resource_types);
 			}
 			$table->string('url', 2048);
@@ -79,10 +79,10 @@ class ProjectResourceTask extends Migration {
 	{
 		$type = Config::get('database.default');
 
-		Schema::drop('projects');
-		Schema::drop('resources');
 		Schema::drop('tasks');
 		Schema::drop('project_resource');
+		Schema::drop('projects');
+		Schema::drop('resources');
 
 		if ($type == 'pgsql') {
 			DB::statement("DROP TYPE IF EXISTS resource_type;");

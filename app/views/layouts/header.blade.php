@@ -15,8 +15,10 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="{{ action('ProjectController@getIndex') }}">Projects</a></li>
-        <li><a href="{{ action('ResourceController@getIndex') }}">Resources</a></li>
+        <!--<li class="active"><a href="{{ action('ProjectController@index') }}">Projects</a></li>
+        <li><a href="{{ action('ResourceController@index') }}">Resources</a></li>-->
+        {{ HTML::clever_link('projects', 'Projects') }}
+        {{ HTML::clever_link('resources', 'Resources') }}
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
           <ul class="dropdown-menu">
@@ -37,18 +39,27 @@
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
       <ul class="nav navbar-nav navbar-right">
-        
-        <li><a href="Sign">Link</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-          </ul>
-        </li>
+        @if (Auth::check())
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+            </ul>
+          </li>
+          <li><a href="{{ url('user/logout') }}">Logout</a></li>
+        @else
+          <li><a href="{{ url('user/login') }}">Sign In</a></li>
+          <li class="dropdown">
+            <a href="{{ url('user/register') }}" class="dropdown-toggle" data-toggle="dropdown">Register<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+          </li>
+        @endif
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

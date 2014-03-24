@@ -34,9 +34,8 @@ class UserController extends Controller {
 		$remember = (bool)(Input::get('remember'));
 
 		if (($passes = $validator->passes()) && Auth::attempt($login, $remember)) {
-			//@todo, standardize this
-			$continue = ((Input::get('continue') !== null) ? Input::get('continue') : '/');
-			return Redirect::to($continue);
+			//@todo: fix this... ideally put ?continue=URL in the url
+			return Redirect::intended('/');
 		}
 		
 		if ($passes) {

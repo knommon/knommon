@@ -4,10 +4,10 @@
 	  <div class="page-header">
         <h1>Delete {{ $resource->name }} <small>Are you sure?</small></h1>
     </div>
-    <form action="{{ action('ResourceController@postDelete') }}" method="post" role="form">
+    {{ Form::open(array('url' => action('ResourceController@destroy', $resource->id), 'method' => 'delete')) }}
         <input type="hidden" name="resource" value="{{ $resource->id }}" />
         <input type="submit" class="btn btn-danger" value="Yes" />
-        <a href="{{ action('ResourceController@getIndex') }}" class="btn btn-default">No way!</a>
-    </form>
+        <a href="{{ action('ResourceController@index') }}" class="btn btn-default">No way!</a>
+    {{ Form::close() }}
 
 @stop

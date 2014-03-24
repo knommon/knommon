@@ -1,11 +1,6 @@
 <?php
 
-if (Config::get('app.debug')) {
-	/*Event::listen('illuminate.query', function($query, $bindings, $time, $name){
-		Log::info($query."\n");
-		Log::info(json_encode($bindings)."\n");
-	});*/
-}
+include_once 'functions.php';
 
 /*
 |--------------------------------------------------------------------------
