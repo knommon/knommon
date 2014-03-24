@@ -15,8 +15,8 @@ If you get a permission error at any point, try re-running the command with root
 ## Lamp Dev Stack Setup
 
 Tap the following PHP repositories, allowing brew to see the packages available by these vendors: 
-`$ brew tap josegonzalez/homebrew-php`  
-`$ brew tap homebrew/dupes`
+```$ brew tap josegonzalez/homebrew-php  
+$ brew tap homebrew/dupes```
 
 Laravel requires PHP 5.3.7+ with the mcrypt module.  
 To install a new version of PHP, run `$ brew install php55 php55-mcrypt`.  
@@ -72,15 +72,16 @@ Run `$ sudo make`.
 Now you'll need to compile the CSS, Sprite & Javascript.  
 `$ grunt make`
 
-Database setup. Edit app/config/database.php and modify it to include your database settings. If you don't know your database settings, you should learn them! If you don't know database stuff at all:
-$ mysql -u root     // run the database program as root so you have necessary permissions
-mysql> create database my_database
-mysql> use my_database
-mysql> quit
+**Database setup**. Edit app/config/database.php and modify it to include your database settings. If you don't know your database settings, you should learn them! If you don't know database stuff at all:
+`$ mysql -u root`     // run the database program as root so you have necessary permissions
+```mysql> create database my_database;  
+mysql> grant all on my_database.* to username@localhost identified by 'password';  
+mysql> flush privileges;  
+mysql> quit;```
 
-Then go to app/config/database.php and edit the connection so that the default database is 'my_database'
+Then go to app/config/database.php and edit the connection so that the default database is 'my_database', 'username', 'password'
 
-) Do not modify default.database.php. 
+Do not modify default.database.php. 
 
 Create the migrations table. `php artisan migrate:install`
 
@@ -99,58 +100,30 @@ Also, for instant browser refreshing, install the Chrome extension [LiveReload](
 
 ## Git Workflow
 
-Do *not* use git pull. Instead use *git up*. To create this command, run the following: `git config --global alias.up "!git remote update -p; git merge --ff-only @{u}"`
+Do **not** use git pull. Instead use *git up*, which will help to keep the commit history clean. To create this command, run the following: `git config --global alias.up "!git remote update -p; git merge --ff-only @{u}"`
 
-A typical git workflow looks like this:  
+*Never commit directly to master!* Always do work in a seperate dev branch.  
+Checkout another branch so that if you mess anything up, you are safe. 
+
+`$ git checkout -b my_branch` or whatever you want to call your branch  
+
+Then you do whatever - create files, edit files, make and destroy folders, mostly in knommon/app. Do your thing.
+Once you have a good, logical chunck completed push your code.
+
+To push your code, do the following:
+
 On branch *dev*. 
 `git checkout master`  
 `git up` fetch the latest changes  
 `git checkout dev`  
-`git rebase master` apply new changes to our dev branch, then apply our commits to dev  
+`git rebase master` apply new changes to our dev branch, then apply our commits to dev   
 make sure there are no merge conflicts, fix them and run `git rebase --continue`  
 `git checkout master`  
 `git merge dev` Merge our newest changes into master  
 `git push` push changes to the server  
 
-*Never commit directly to master!* Always do work in a seperate dev branch.
 
-## All Done!
+## All Done
 
 You're all set, happy developing!
-
-
-## Git Workflow
-
-You probably got the master package from github and got push permissions from someone already, but talk to someone on the dev team if that doesn't ring a bell.
-
-First run $ git config --global alias.up "git status remote update -p; git merge --ff-only @{u}"
-This adds a new git command `$ git up` which is safer than the standard git pull
-
-DON'T DEVELOP IN MASTER. Checkout another branch so that if you mess anything up, you are safe. 
-$ git checkout -b my_branch 
-or whatever you want to call your branch
-
-Then you do whatever - create files, edit files, make and destroy folders, mostly in knommon/app. Do your thing.
-Once you have a good chunk done:
-
-$ git checkout master
-$ git up
-$ git checkout my_branch (or whatever your branch was called)
-$ git rebase master
---> if there are merge conflicts, fix them! That means go into the file indicated, change it to what it should be, and add it. Then, 
-$ git rebase --continue
-$ git checkout master
-$ git merge my_branch
-$ git push
-
-
-
-
-
-
-
-
-
-
-
 
