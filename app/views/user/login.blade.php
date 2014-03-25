@@ -8,6 +8,7 @@
 	<h2>Sign In</h2>
 	<div class="social-buttons social-buttons-login form-group">
 		<a href="{{ URL::route('facebook') }}" class="btn btn-default facebook">Login with Facebook</a>
+		<a href="{{ URL::route('twitter') }}" class="btn btn-default twitter">Login with Twitter</a>
 		<a href="{{ URL::route('google') }}" class="btn btn-default google">Login with Google</a>
 	</div>
 	{{ Form::open(['url' => 'user/login', 'autocomplete' => 'off', 'class' => 'pure-form pure-form-stacked']) }}
@@ -29,7 +30,7 @@
 				<div class="error"> {{ $error }} </div>
 			@endif
 		</div>
-		<div class="form-group">
+		<div class="form-group checkbox">
 			{{ Form::checkbox('remember', '1', true) }}
 			<label for="remember">Remember Me</label>
 		</div>

@@ -7,9 +7,7 @@ Route::get('/', 'ProjectController@index');
 Route::controller('user', 'UserController');
 Route::controller('password', 'RemindersController');
 Route::controller('social', 'SocialController', array(
-	'getFacebook' => 'facebook',
-	'getGoogle' => 'google',
-	'getAuth' => 'auth'
+	'getFacebook' => 'facebook', 'getTwitter' => 'twitter', 'getGoogle' => 'google',
 ));
 
 // Project & Resource routes

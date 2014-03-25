@@ -7,6 +7,7 @@
 	<div class="social-buttons social-buttons-register form-group">
 		<div class="social-buttons">
 			<a href="{{ URL::route('facebook') }}" class="btn btn-default facebook">Register with Facebook</a>
+			<a href="{{ URL::route('twitter') }}" class="btn btn-default twitter">Register with Twitter</a>
 			<a href="{{ URL::route('google') }}" class="btn btn-default google">Register with Google</a>
 		</div>
 	</div>

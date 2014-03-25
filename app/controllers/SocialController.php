@@ -15,17 +15,21 @@ class SocialController extends Controller {
 			if (empty($provider)) {
 				return Redirect::to('/');
 			}
-			return Redirect::route($provider);
+			return Redirect::action('SocialController@get' . $provider);
 		}
 		return;
 	}
 
 	public function getFacebook() {
-		return $this->attemptLogin('facebook');
+		return $this->attemptLogin('Facebook');
+	}
+
+	public function getTwitter() {
+		return $this->attemptLogin('Twitter');
 	}
 
 	public function getGoogle() {
-		return $this->attemptLogin('google');
+		return $this->attemptLogin('Google');
 	}
 
 	/**
@@ -34,23 +38,23 @@ class SocialController extends Controller {
 	 * Tries to authenticate the user with the given $providerName, if successful logs
 	 * the user in with the given social profile. If no user with a corresponding social
 	 * profile exists in the database, then one is created and attached to this profile.
-	 * @param string $providerName the provider's name supported by HybridAuth
+	 * @param string $providerName the provider's name supported by HybridAuth exactly
+	 * with the first letter capital, and the rest lowercase
 	 */
 	protected function attemptLogin($providerName) {
 		Session::put('social_login', $providerName);
+
 		try {
 			$hybridAuth = new Hybrid_Auth(app_path() . '/config/hybridauth.php');
 			$provider = $hybridAuth->authenticate($providerName);
 
 			$profile = $provider->getUserProfile();
 			$token = $provider->getAccessToken();
-
-			$identifier = $profile->identifier;
-			$providerName = ucfirst($providerName);
+			$token['expires_at'] = date('Y-m-d H:i:s', $token['expires_at']);
 
 			//check if a social account exists in the database
 			$result = DB::table('accounts')->select('id', 'user_id')
-				->where('provider_uid', '=', $identifier)
+				->where('provider_uid', '=', $profile->identifier)
 				->where('provider', '=', $providerName)
 				->take(1)->first();
 
@@ -74,10 +78,10 @@ class SocialController extends Controller {
 				}
 				$id = $user->id;
 
-				$this->createAccount($profile, $token);
+				$this->createAccount($id, $providerName, $profile, $token);
 			} else {
 				$id = $result->user_id;
-				//update social account credentials
+				//update existing social account credentials
 				$result = DB::table('accounts')
 					->where('id', '=', $result->id)
 					->update(array(
@@ -124,19 +128,26 @@ class SocialController extends Controller {
 		}
 	}
 
-	//create new social account with the given user's profile and access token
-	protected function createAccount($profile, $token) {
+	/**
+	 * Create a new social account with the given user's profile and access token.
+	 * @param  int $user_id      the User id from our database
+	 * @param  string $providerName the provider's name that matches the providers type in the database
+	 * @param  object Hybrid_User_Profile $profile
+	 * @param  array oauth access $token
+	 * @return boolean if the account was created successfully
+	 */
+	protected function createAccount($user_id, $providerName, $profile, $token) {
+
 		$gender = empty($profile->gender) ? null : substr($profile->gender, 0, 1);
 		$birthday = null;
 		if ($profile->birthMonth != 0 && $profile->birthDay != 0 && $profile->birthYear != 0) {
 			$birthday = date('Y-m-d', mktime(0, 0, 0, $profile->birthMonth, $profile->birthDay, $profile->birthYear));
 		}
-		$expires_at = date('Y-m-d H:i:s', $token['expires_at']);
 
 		return DB::table('accounts')->insert(array(
-			'user_id' => $id,
+			'user_id' => $user_id,
 			'provider' => $providerName,
-			'provider_uid' => $identifier,
+			'provider_uid' => $profile->identifier,
 			'first_name' => $profile->firstName,
 			'last_name' => $profile->lastName,
 			'email' => $profile->email,
@@ -152,7 +163,7 @@ class SocialController extends Controller {
 			'city' => $profile->city,
 			'zip' => $profile->zip,
 			'access_token' => $token['access_token'],
-			'expires_at' => $expires_at,
+			'expires_at' => $token['expires_at'],
 		));
 	}
 }

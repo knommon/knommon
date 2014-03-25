@@ -64,6 +64,13 @@ input {
 			background: lighten(#dd4b39, 5%);
 		}
 	}
+	.twitter {
+		color: white;
+		background: #00aced;
+		&:hover {
+			background: lighten(#00aced, 5%);
+		}
+	}
 	.btn {
 		@include border-radius(2px);
 		padding: 8px 20px;
