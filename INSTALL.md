@@ -42,8 +42,10 @@ Alternatively, you can install it with homebrew:
 
 Install sass with [gem](http://rubygems.org/pages/download) (see link for gem install guide). `$ gem install sass`
 
-Next install [compass](http://compass-style.org/install/).  
+Next install [compass](http://compass-style.org/install/) version 1.0.0.alpha.19 or higher.   
 `$ gem update --system && gem install compass`
+
+Run `gem install compass --pre` to get the newest alpha version.
 
 NPM. You also need to install the Node Package Manager to install a few other utilities.  
 `$ brew install node`

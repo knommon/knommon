@@ -73,12 +73,17 @@ class SocialController extends Controller {
 					$user->fname = $profile->firstName;
 					$user->lname = $profile->lastName;
 					$user->email = $profile->email;
+					//$user->photo_url = $profile->photoURL;
 					$user->password = null;
 					$user->save();
 				}
 				$id = $user->id;
 
 				$this->createAccount($id, $providerName, $profile, $token);
+
+				//should we have a welcome page specifically or set a bool welcome on user?
+				//Auth::loginUsingId($id);
+				//return Redirect::to('user/welcome');
 			} else {
 				$id = $result->user_id;
 				//update existing social account credentials
@@ -92,7 +97,7 @@ class SocialController extends Controller {
 			
 			Auth::loginUsingId($id);
 
-			return Redirect::to('/');
+			return Redirect::intended('/');
 
 		} catch (Exception $e) {
 			$error = '';
@@ -117,7 +122,6 @@ class SocialController extends Controller {
 
 			$msg = "Internal error. Please try a different sign-in method.";
 			if ($code == 5 || $code == 6) {
-				$providerName = ucfirst($providerName);
 				$msg = "Error connecting to {$providerName}, please try again.";
 			}
 
