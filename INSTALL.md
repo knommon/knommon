@@ -89,6 +89,12 @@ Next, to create the database tables, run `php artisan migrate`.
 
 If you're unsure, run `php artisan migrate --pretend` to see what the migrate command will do. Read more about migrations [here](http://daylerees.com/codebright/migrations).
 
+For new migrations, the following artisan commands may be helpful:
+`php artisan migrate:rollback` rollback the last migration operation  
+`php artisan migrate:reset` reset all migrations  
+`php artisan migrate:refresh` rollback all migrations and run them again  
+See [the Laravel Docs/Migrations](http://laravel.com/docs/migrations#rolling-back-migrations) for more details.
+
 ## Dev Workflow
 
 Run the Laravel application (on port 8000 by default, can specify with `--port=8080`).  

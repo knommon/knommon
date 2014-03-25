@@ -8,6 +8,9 @@
         <div class="form-group">
             <label for="name">Name</label>
             <input type="text" class="form-control" name="name" value="{{ $resource->name }}"  />
+            @if ($error = $errors->first('name'))
+                <div class="error"> {{ $error }} </div>
+            @endif
         </div>
         <div class="form-group">
             <label for="url">Link</label>
@@ -15,7 +18,10 @@
         </div>
         <div class="form-group">
             <label for="body">Body</label>
-            <input type="text" class="form-control" name="body" value="{{ $resource->body }}" />
+            <textarea class="form-control" name="body">{{ $resource->body }}</textarea>
+            @if ($error = $errors->first('body'))
+                <div class="error"> {{ $error }} </div>
+            @endif
         </div>
         <input type="submit" value="Save" class="btn btn-primary" />
         <a href="{{ action('ProjectController@index') }}" class="btn btn-link">Cancel</a>

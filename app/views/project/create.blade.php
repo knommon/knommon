@@ -4,7 +4,6 @@
 	<div class="page-header">
         <h1>Create A New Project <small>and get working</small></h1>
     </div>
-
     {{ Form::open(array('url' => action('ProjectController@store'), 'method' => 'post' )) }}
         <div class="form-group">
             <label for="title">Title</label>

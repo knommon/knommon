@@ -5,7 +5,10 @@
 @stop
 
 @section('content')
+	@if ($status = Session::get('status'))
+		<div class="alert alert-success">{{ $status }}</div>
+	@endif
+
 	<h1>{{ $project->title }}</h1>
-	<p>{{ $project->about }}
-	</p>
+	<p>{{{ $project->about }}}</p>
 @stop

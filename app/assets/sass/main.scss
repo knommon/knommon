@@ -36,3 +36,37 @@ input {
 	-webkit-font-smoothing: antialiased;
 	text-rendering: optimizeLegibility;
 }
+
+//@todo: replace this with a map with sass 3.3 - can't get it to work with grunt?
+//@todo: icon sprites next to each button
+//$profiles: (facebook: #3b5998, google: #dd4b39, twitter: #00aced, github: #4183c4, linkedin: #007bb6);
+/*
+//	@each $profile in $profiles {
+//		.#{$profile}, .#{$profile}:hover {
+//			color: white;
+//			background: #3b5998;
+//		}
+//	}
+ */
+
+.social-buttons {
+	.facebook {
+		color: white;
+		background: #3b5998;
+		&:hover {
+			background: lighten(#3b5998, 5%);
+		}
+	}
+	.google {
+		color: white;
+		background: #dd4b39;
+		&:hover {
+			background: lighten(#dd4b39, 5%);
+		}
+	}
+	.btn {
+		@include border-radius(2px);
+		padding: 8px 20px;
+		border: none;
+	}
+}
