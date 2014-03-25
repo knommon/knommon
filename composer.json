@@ -6,7 +6,8 @@
 	"require": {
 		"laravel/framework": "4.1.*",
 		"hybridauth/hybridauth": "dev-master",
-		"nesbot/Carbon": "*"
+		"nesbot/Carbon": "*",
+		"felixkiss/uniquewith-validator": "1.0.*"
 	},
 	"require-dev": {
 		"darsain/laravel-console": "dev-master",

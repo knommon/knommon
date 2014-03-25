@@ -105,7 +105,7 @@ class ResourceController extends Controller {
 		$resource->name = Input::get('name');
 		$resource->url = Input::get('url');
 		$resource->body = e(Input::get('body'));
-		$resource->type = 'Null';
+		$resource->type = null;
 
 		if ($create) {
 			$resource->user_id = Auth::user()->id;
@@ -114,6 +114,6 @@ class ResourceController extends Controller {
 		$resource->save();
 		
 		return Redirect::action('ResourceController@show', $resource->id)
-			->with('status', "Resource {$resource->name} " . ($create ? 'created' : 'updated') . " successfully!");
+			->with('status', "Resource " . ($create ? 'created' : 'updated') . " successfully!");
 	}
 }

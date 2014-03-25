@@ -110,6 +110,6 @@ class ProjectController extends Controller {
 		$project->save();
 		
 		return Redirect::action('ProjectController@show', $project->id)
-			->with('status', "Project {$project->name} " . ($create ? 'created' : 'updated') . " successfully!");
+			->with('status', "Project " . ($create ? 'created' : 'updated') . " successfully!");
 	}
 }

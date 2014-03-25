@@ -14,7 +14,7 @@ class ProjectResourceTask extends Migration {
 	{
 		$type = Config::get('database.default');
 
-		$resource_types = array('Article', 'Book', 'Course', 'Image', 'Text', 'Video', 'Null');
+		$resource_types = array('Article', 'Book', 'Course', 'Image', 'Text', 'Video', 'Other');
 
 		Schema::create('projects', function($table) {
 			$table->increments('id');
@@ -34,6 +34,7 @@ class ProjectResourceTask extends Migration {
 				$table->enum('type', $resource_types);
 			}
 			$table->string('url', 2048);
+			$table->unsignedInteger('votes');
 			$table->text('body');
 			$table->timestamps();
 		});
@@ -60,10 +61,12 @@ class ProjectResourceTask extends Migration {
 		});
 
 		Schema::create('project_resource', function($table) {
-			$table->integer('project_id')->unsigned();
+			$table->increments('id');
+			$table->unsignedInteger('project_id');
 			$table->foreign('project_id')->references('id')->on('projects');
-			$table->integer('resource_id')->unsigned();
+			$table->unsignedInteger('resource_id');
 			$table->foreign('resource_id')->references('id')->on('resources');
+			$table->unique(array('project_id', 'resource_id')); //felixkiss/uniquewith-validator
 		});
 
 	}

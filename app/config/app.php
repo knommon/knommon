@@ -108,6 +108,7 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
 		'Darsain\Console\ConsoleServiceProvider',
+		'Felixkiss\UniqueWithValidator\UniqueWithValidatorServiceProvider',
 	),
 
 	/*
