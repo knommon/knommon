@@ -15,3 +15,4 @@ Route::resource('projects', 'ProjectController');
 Route::resource('resources', 'ResourceController');
 Route::get('projects/confirm/{id}', 'ProjectController@confirm');
 Route::get('resources/confirm/{id}', 'ResourceController@confirm');
+Route::post('resources/create', 'ResourceController@create');

@@ -14,7 +14,7 @@ class ProjectController extends Controller {
 	 * Display a listing of the project.
 	 */
 	public function index() {
-		$projects = Project::all();
+		$projects = Project::orderBy('updated_at', 'desc')->get();
 		return View::make('project/index', compact('projects'));
 	}
 

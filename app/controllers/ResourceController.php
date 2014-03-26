@@ -14,7 +14,7 @@ class ResourceController extends Controller {
 	 * Display a listing of the resource.
 	 */
 	public function index() {
-		$resources = Resource::all();
+		$resources = Resource::orderBy('updated_at','desc')->take(10)->get();
 		return View::make('resource/index', compact('resources'));
 	}
 
@@ -90,12 +90,12 @@ class ResourceController extends Controller {
 	/**
 	 * @todo: sanitize input
 	 * Attemps to commit the edits on the resource in Input, or returns to fail action
-	 * @param  Reource $resource   The project resource to modify
+	 * @param  Resource $resource   The project resource to modify
 	 * @param  boolean $create     If we're creating, false for editing
 	 */
 	protected function attemptEdit(Resource $resource, $create = false)
 	{
-		$validator = Validator::make(Input::all(), ['name' => 'required', 'body' => 'required']);
+		$validator = Validator::make(Input::all(), ['name' => 'required', 'body' => 'required', 'projectid' => 'required']);
 
 		if ($validator->fails()) {
 			$redirect = ($create) ? Redirect::action('ResourceController@create') : Redirect::action('ResourceController@edit', $resource->id);
@@ -105,7 +105,8 @@ class ResourceController extends Controller {
 		$resource->name = Input::get('name');
 		$resource->url = Input::get('url');
 		$resource->body = e(Input::get('body'));
-		$resource->type = null;
+		$resource->type = 'Other';
+		$resource->votes = 0;
 
 		if ($create) {
 			$resource->user_id = Auth::user()->id;
@@ -113,6 +114,9 @@ class ResourceController extends Controller {
 
 		$resource->save();
 		
+		$resource->projects()->attach(Input::get('projectid'));
+		$resource->save();
+
 		return Redirect::action('ResourceController@show', $resource->id)
 			->with('status', "Resource " . ($create ? 'created' : 'updated') . " successfully!");
 	}

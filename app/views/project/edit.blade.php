@@ -27,6 +27,6 @@
             @endif
         </div>
         <input type="submit" value="Save" class="btn btn-primary" />
-        <a href="{{ action('ProjectController@index') }}" class="btn btn-link">Cancel</a>
+        <a href="{{ action('ProjectController@show', $project->id) }}" class="btn btn-link">Cancel</a>
     {{ Form::close() }}
 @stop
