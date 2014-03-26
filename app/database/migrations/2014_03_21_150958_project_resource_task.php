@@ -22,6 +22,7 @@ class ProjectResourceTask extends Migration {
 			$table->foreign('user_id')->references('id')->on('users');
 			$table->string('title');
 			$table->text('about');
+			$table->string('tagline', 255)->after('title');
 			$table->timestamps();
 		});
 
@@ -82,10 +83,10 @@ class ProjectResourceTask extends Migration {
 	{
 		$type = Config::get('database.default');
 
-		Schema::drop('tasks');
-		Schema::drop('project_resource');
-		Schema::drop('projects');
-		Schema::drop('resources');
+		Schema::dropIfExists('tasks');
+		Schema::dropIfExists('project_resource');
+		Schema::dropIfExists('projects');
+		Schema::dropIfExists('resources');
 
 		if ($type == 'pgsql') {
 			DB::statement("DROP TYPE IF EXISTS resource_type;");

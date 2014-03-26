@@ -13,7 +13,7 @@ class UserRelations extends Migration {
 	public function up()
 	{
 		//defines the user-to-project relationship
-		Schema::create('membership', function($table) {
+		Schema::create('members', function($table) {
 			$table->increments('id');
 			$table->unsignedInteger('user_id');
 			$table->foreign('user_id')->references('id')->on('users');
@@ -23,7 +23,8 @@ class UserRelations extends Migration {
 			$table->unique(array('user_id', 'project_id')); //felixkiss/uniquewith-validator
 		});
 
-		Schema::create('follow', function($table) {
+		//defines another user-to-project relationship
+		Schema::create('follows', function($table) {
 			$table->increments('id');
 			$table->unsignedInteger('user_id');
 			$table->foreign('user_id')->references('id')->on('users');
@@ -40,7 +41,8 @@ class UserRelations extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::dropIfExists('membership');
+		Schema::dropIfExists('follow');
 	}
 
 }

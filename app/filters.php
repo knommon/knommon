@@ -44,6 +44,40 @@ Route::filter('auth.basic', function()
 	return Auth::basic();
 });
 
+Route::filter('auth.access', function($route, $request, $mode = 'project') {
+	if (Auth::guest()) return Redirect::guest('user/login');
+
+	$user = Auth::user();
+	$error = null;
+	$action = explode('.', Route::currentRouteName());
+	$action = array_pop($action);
+	if (!$action) $action = 'edit';
+
+	switch ($mode) {
+		case 'project':
+			//try to find a project id from eithe the URL or the input project_id field
+			$project = Route::input('projects');
+			$project = (empty($project) ? Input::get('project_id') : $project);
+			if (empty($project)) {
+				$error = "Could not find the specified project.";
+			} else if (!$user->isMember($project))
+				$error = "You must be a member of this project to {$action} it.";
+			break;
+		case 'resource':
+			$id = Route::input('resources');
+			$resource = Resource::find($id);
+			if ($resource->user_id != $user->id)
+				$error = "You don't have access to {$action} this resource.";
+			break;
+	}
+
+	if ($error != null) {
+		$errors = new \Illuminate\Support\MessageBag();
+		$errors->add('error', $error);
+		return Redirect::back()->withErrors($errors);
+	}
+});
+
 /*
 |--------------------------------------------------------------------------
 | Guest Filter

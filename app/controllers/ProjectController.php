@@ -6,8 +6,8 @@
 class ProjectController extends Controller {
 
 	public function __construct() {
-		// for the user to be logged in to perform any action except view
-		$this->beforeFilter('auth', array('except' => array('index', 'show')));
+		// for the user to be logged & a member of the project to perform any action except view, create/store
+		$this->beforeFilter('auth.access:project', array('except' => array('index', 'show', 'create', 'store')));
 	}
 
 	/**
@@ -41,7 +41,26 @@ class ProjectController extends Controller {
 	public function show($id)
 	{
 		$project = Project::findOrFail($id);
-		return View::make('project/show', compact('project'));
+		$team = $project->users()->get();
+
+		$follows = $isMember = false;
+
+		if (Auth::check()) {
+			$user = Auth::user();
+			$team->contains($user);
+			$isMember = $team->contains($user->id);
+
+			if (!$isMember) {
+				$follows = $user->isFollowing($project->id);
+			}
+		}
+		
+		return View::make('project/show', array(
+			'project' => $project, 
+			'team' => $team,
+			'isMember' => $isMember,
+			'follows' => $follows
+		));
 	}
 
 	/**
@@ -73,6 +92,7 @@ class ProjectController extends Controller {
 	}
 
 	/**
+	 * @todo: make this a soft delete and just hide the project?
 	 * Remove the specified project from storage.
 	 * @method DELETE
 	 */
@@ -100,17 +120,23 @@ class ProjectController extends Controller {
 			return $redirect->withInput(Input::all())->withErrors($validator);
 		}
 		
-		//should we be e()-ing all of the inputs? 	
-		$project->title = Input::get('title');
-		$project->tagline = Input::get('tagline');
+		$project->title = e(Input::get('title'));
+		$project->tagline = e(Input::get('tagline'));
 		$project->about = e(Input::get('about'));
+
+		$user = Auth::user();
 		
 		if ($create) {
-			$project->user_id = Auth::user()->id;
+			$project->user_id = $user->id;
 		}
 
 		$project->save();
-		
+
+		if ($create) {
+			// add this user as a member of the project
+			$user->join($project->id);
+		}
+
 		return Redirect::action('ProjectController@show', $project->id)
 			->with('status', "Project " . ($create ? 'created' : 'updated') . " successfully!");
 	}

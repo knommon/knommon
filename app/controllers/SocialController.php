@@ -3,7 +3,13 @@
 include_once 'UserController.php';
 
 use Illuminate\Support\MessageBag;
+use Jyggen\Curl\Curl;
 
+/**
+ * Defines social routes that can be used to register a new user,
+ * login an existing user or add a social account to a signed in
+ * user. The routes are the same for all of these actions.
+ */
 class SocialController extends Controller {
 
 	public function getAuth() {
@@ -73,17 +79,23 @@ class SocialController extends Controller {
 					$user->fname = $profile->firstName;
 					$user->lname = $profile->lastName;
 					$user->email = $profile->email;
-					//$user->photo_url = $profile->photoURL;
 					$user->password = null;
+					if ($profile->photoURL != null)
+						$user->photo_url = $this->getPhoto($providerName, $profile->photoURL);
+					$user->save();
+				} else if ($user->photo_url == null && $profile->photoURL != null) {
+					//we have a profile image to insert
+					$user->photo_url = $this->getPhoto($providerName, $profile->photoURL);
 					$user->save();
 				}
+
 				$id = $user->id;
 
 				$this->createAccount($id, $providerName, $profile, $token);
 
 				//should we have a welcome page specifically or set a bool welcome on user?
 				//Auth::loginUsingId($id);
-				//return Redirect::to('user/welcome');
+				//return Redirect::intended('user/welcome');
 			} else {
 				$id = $result->user_id;
 				//update existing social account credentials
@@ -126,9 +138,9 @@ class SocialController extends Controller {
 			}
 
 			$errors = new MessageBag();
-			$errors->add('form', $msg);
+			$errors->add('error', $msg);
 
-			return Redirect::to('user/login')->withErrors($errors);
+			return Redirect::back()->withErrors($errors);
 		}
 	}
 
@@ -169,5 +181,34 @@ class SocialController extends Controller {
 			'access_token' => $token['access_token'],
 			'expires_at' => $token['expires_at'],
 		));
+	}
+
+	protected function getPhoto($provider, $photoURL, $size = 100) {
+		$url;
+		switch ($provider) {
+			case 'Google':
+				$parts = explode('?sz=', $photoURL);
+				$url = $parts[0] . '?sz=' . $size;
+				break;
+			case 'Facebook':
+				$parts = explode('?', $photoURL);
+				$url = $parts[0] . "?width={$size}&height={$size}";
+
+				/*$cr = curl_init($url); 
+				curl_setopt($cr, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($cr, CURLOPT_FOLLOWLOCATION, 1);
+				curl_exec($cr);
+				$info = curl_getinfo($cr);
+				$url = $info["url"];*/
+				$request = new Jyggen\Curl\Request($url);
+				$request->setOption(CURLOPT_FOLLOWLOCATION, true);
+				$request->execute();
+				$info = $request->getInfo();
+				$url = $info['url'];
+
+				break;
+		}
+
+		return $url;
 	}
 }

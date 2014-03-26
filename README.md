@@ -26,6 +26,10 @@ Checkout this [handy Laravel cheatsheet](http://cheats.jesse-obrien.ca/).
 
 Documentation for the entire framework can be found on the [Laravel website](http://laravel.com/docs).
 
+#### Larvel Gotchas
+When using `View::make`, the second parameter is an array of key-values that become available in the view (the .blade.php file). For example `View::make('hello', array('myvar' => $var1))` would make $myvar available to the view.  
+Using `View::make()->with('myvar', true) will flash 'myvar' to the **Session** data. You access that with `Session::get('myvar')`. This is most helpful when using a Redirect.
+
 Caching:  
 Redis / Varnish / Memcached?  
 https://github.com/TheMonkeys/laravel-blade-cache-filter

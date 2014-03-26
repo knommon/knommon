@@ -21,6 +21,9 @@
 	</div>
 	<div class="content">
 		<div class="container">
+			@if (($error = $errors->first('error')) || ($error = Session::get('error')))
+				<div class="error alert alert-danger"> {{ $error }} </div>
+			@endif
 			@yield('content')
 		</div>
 	</div>

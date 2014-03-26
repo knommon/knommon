@@ -12,10 +12,6 @@
 	</div>
 	<h2>Sign In</h2>
 	{{ Form::open(['url' => 'user/login', 'autocomplete' => 'off', 'class' => 'pure-form pure-form-stacked']) }}
-		@if ($error = $errors->first('form'))
-			<div class="error alert alert-danger"> {{ $error }} </div>
-		@endif
-
 		<div class="form-group">
 			<label for="email" class="sr-only">Email:</label>
 			{{ Form::text('email', Input::old('email'), ['placeholder' => 'Email', 'class' => 'form-control']) }}
@@ -36,6 +32,8 @@
 		</div>
 
 		{{ Form::submit('Sign In', ['class' => 'btn btn-primary']) }}
+
+		<a href="{{ URL::to('password/forgot') }}">Forgot Your Password?</a>
 
 	{{ Form::close() }}
 @stop

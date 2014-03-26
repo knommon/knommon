@@ -7,7 +7,7 @@ class ResourceController extends Controller {
 
 	public function __construct() {
 		// for the user to be logged in to perform any action except view
-		$this->beforeFilter('auth', array('except' => array('index', 'show')));
+		$this->beforeFilter('auth.access:project', array('except' => array('index', 'show')));
 	}
 
 	/**
@@ -19,6 +19,7 @@ class ResourceController extends Controller {
 	}
 
 	/**
+	 * @todo: add $id parameter for Project to create resource on
 	 * Show the form for creating a new resource.
 	 */
 	public function create() {
@@ -95,15 +96,15 @@ class ResourceController extends Controller {
 	 */
 	protected function attemptEdit(Resource $resource, $create = false)
 	{
-		$validator = Validator::make(Input::all(), ['name' => 'required', 'body' => 'required', 'projectid' => 'required']);
+		$validator = Validator::make(Input::all(), ['name' => 'required', 'body' => 'required', 'project_id' => 'required']);
 
 		if ($validator->fails()) {
 			$redirect = ($create) ? Redirect::action('ResourceController@create') : Redirect::action('ResourceController@edit', $resource->id);
 			return $redirect->withInput(Input::all())->withErrors($validator);
 		}
 
-		$resource->name = Input::get('name');
-		$resource->url = Input::get('url');
+		$resource->name = e(Input::get('name'));
+		$resource->url = e(Input::get('url'));
 		$resource->body = e(Input::get('body'));
 		$resource->type = 'Other';
 		$resource->votes = 0;
@@ -114,7 +115,7 @@ class ResourceController extends Controller {
 
 		$resource->save();
 		
-		$resource->projects()->attach(Input::get('projectid'));
+		$resource->projects()->attach(Input::get('project_id'));
 		$resource->save();
 
 		return Redirect::action('ResourceController@show', $resource->id)

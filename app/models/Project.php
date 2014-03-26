@@ -1,6 +1,5 @@
 <?php
 
-
 class Project extends Eloquent {
 
 	/**
@@ -18,6 +17,16 @@ class Project extends Eloquent {
 	public function resources()
 	{
 		return $this->belongsToMany('Resource', 'project_resource', 'project_id', 'resource_id');
+	}
+
+	public function users()
+	{
+		return $this->belongsToMany('User', 'members');
+	}
+
+	public function follows()
+	{
+		return $this->belongsToMany('User', 'follows');
 	}
 
 }

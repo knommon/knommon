@@ -5,13 +5,18 @@ use Illuminate\Support\MessageBag;
 define('WELCOME_MESSAGE', 'Thanks for registering!');
 define('ERROR_MESSAGE', 'The following errors occurred:');
 
+/**
+ * @todo: make the project join/leave follow/unfollow actions POST requests
+ */
 class UserController extends Controller {
 
 	const HOME_ROUTE = '/';
 
 	public function __construct() {
 		$this->beforeFilter('csrf', array('on' => 'post'));
-		$this->beforeFilter('auth', array('only' => array('getDashboard', 'getWelcome')));
+		$this->beforeFilter('auth', array('only' => array(
+			'getDashboard', 'getWelcome', 'getJoin', 'getLeave', 'getFollow', 'getUnfollow'
+		)));
 	}
 
 	public function getLogin() {
@@ -34,7 +39,7 @@ class UserController extends Controller {
 		$remember = (bool)(Input::get('remember'));
 
 		if (($passes = $validator->passes()) && Auth::attempt($login, $remember)) {
-			//@todo: fix this... ideally put ?continue=URL in the url
+			//@todo: ideally put ?continue=URL in the url
 			return Redirect::intended('/');
 		}
 		
@@ -99,5 +104,41 @@ class UserController extends Controller {
 
 	public function getWelcome() {
 		return View::make('user.welcome');
+	}
+
+	//@todo: make these all one post request, postProject/Subscribe with paramers for the method
+	public function getJoin($id) {
+		//@todo: check project's access, if open register automatically otherwise request to join
+		Project::findOrFail($id);
+		if (Auth::user()->join($id)) {
+			return Redirect::back()->with('status', "You joined successfully!");
+		}
+		return Redirect::back()->with('error', "You are already a member of this project!");
+	}
+
+	public function getLeave($id) {
+		Project::findOrFail($id);
+		if (Auth::user()->leave($id)) {
+			return Redirect::back()->with('status', "You have left the project!");
+		}
+		return Redirect::back()->with('error', "You are not a member of this project!");
+	}
+
+	public function getFollow($id) {
+		$project = Project::findOrFail($id);
+		
+		if (Auth::user()->follow($id)) {
+			return Redirect::back()->with('status', "You are now following {$project->title}.");
+		}
+		return Redirect::back()->with('error', "You are already following this project.");
+	}
+
+	public function getUnfollow($id) {
+		$project = Project::findOrFail($id);
+		
+		if (Auth::user()->unfollow($id)) {
+			return Redirect::back();
+		}
+		return Redirect::back()->with('error', "You are not following this project.");
 	}
 }

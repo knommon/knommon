@@ -57,3 +57,44 @@ $profiles: (facebook: #3b5998, google: #dd4b39, twitter: #00aced, github: #4183c
 		border: none;
 	}
 }
+
+.team {
+	@include clearfix;
+	margin-bottom: 15px;
+
+	.member {
+		position: relative;
+		display: inline-block;
+		float: left;
+		margin-right: 15px;
+		&:last-child {
+			margin-right: 0;
+		}
+
+		&:hover > a img {
+			@include opacity(0.8);
+		}
+
+		img {
+			@include border-radius(12px);
+			@include transition(opacity .4s);
+		}
+	}
+	.name {
+		display: block;
+		text-align: center;
+	}
+
+	a {
+		position: block;
+		width:100%;
+		height:100%;
+		top:0;
+		left:0;
+		display: block;
+	}
+}
+
+.tagline {
+	display: block;
+}
