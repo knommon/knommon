@@ -9,6 +9,7 @@
 		<div class="alert alert-success">{{ $status }}</div>
 	@endif
 
-	<h1>{{ $project->title }}</h1>
+	<h1>{{ $project->title }}<small> {{ $project->tagline }}</small></h1>
+
 	<p>{{{ $project->about }}}</p>
 @stop

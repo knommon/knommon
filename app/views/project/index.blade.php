@@ -20,7 +20,7 @@
             <thead>
                 <tr>
                     <th>Title</th>
-                    <th>Description</th>
+                    <th>Tagline</th>
                     <th>Updated</th>
                     <th>Actions</th>
                 </tr>
@@ -29,7 +29,7 @@
                 @foreach($projects as $project)
                 <tr>
                     <td>{{ $project->title }}</td>
-                    <td>{{ $project->about }}</td>
+                    <td>{{ $project->tagline }}</td>
                     <td>{{ $project->updated_at }}</td>
                     <td>
                         <a href="{{ action('ProjectController@edit', $project->id) }}" class="btn btn-default">Edit</a>

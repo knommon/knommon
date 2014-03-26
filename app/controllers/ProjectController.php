@@ -93,14 +93,16 @@ class ProjectController extends Controller {
 	 */
 	protected function attemptEdit(Project $project, $create = false)
 	{
-		$validator = Validator::make(Input::all(), ['title' => 'required', 'about' => 'required']);
+		$validator = Validator::make(Input::all(), ['title' => 'required', 'tagline' => 'required']);
 
 		if ($validator->fails()) {
 			$redirect = ($create) ? Redirect::action('ProjectController@create') : Redirect::action('ProjectController@edit', $project->id);
 			return $redirect->withInput(Input::all())->withErrors($validator);
 		}
-
+		
+		//should we be e()-ing all of the inputs? 	
 		$project->title = Input::get('title');
+		$project->tagline = Input::get('tagline');
 		$project->about = e(Input::get('about'));
 		
 		if ($create) {

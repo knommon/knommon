@@ -13,6 +13,13 @@
             @endif
         </div>
         <div class="form-group">
+            <label for="tagline">Tagline</label>
+            <input type="text" class="form-control" name="tagline" value="{{ $project->tagline }}"/>
+            @if ($error = $errors->first('title'))
+                <div class="error"> {{ $error }} </div>
+            @endif
+        </div>
+        <div class="form-group">
             <label for="about">About</label>
             <textarea class="form-control" name="about">{{ $project->about }}</textarea>
             @if ($error = $errors->first('about'))
