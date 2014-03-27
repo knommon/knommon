@@ -1,13 +1,14 @@
 <?php
 
 /**
- * @todo: add user permissions for Resources
+ * @todo: add user permissions for Resources like so:
+ * is the current user in a project that contains this resource?
  */
 class ResourceController extends Controller {
 
 	public function __construct() {
 		// for the user to be logged in to perform any action except view
-		$this->beforeFilter('auth.access:project', array('except' => array('index', 'show')));
+		$this->beforeFilter('auth.access:resource', array('except' => array('index', 'show')));
 	}
 
 	/**
@@ -96,7 +97,7 @@ class ResourceController extends Controller {
 	 */
 	protected function attemptEdit(Resource $resource, $create = false)
 	{
-		$validator = Validator::make(Input::all(), ['name' => 'required', 'body' => 'required', 'project_id' => 'required']);
+		$validator = Validator::make(Input::all(), ['name' => 'required', 'body' => 'required']);
 
 		if ($validator->fails()) {
 			$redirect = ($create) ? Redirect::action('ResourceController@create') : Redirect::action('ResourceController@edit', $resource->id);
@@ -106,16 +107,14 @@ class ResourceController extends Controller {
 		$resource->name = e(Input::get('name'));
 		$resource->url = e(Input::get('url'));
 		$resource->body = e(Input::get('body'));
-		$resource->type = 'Other';
+		$resource->type = null; //intentionally null
 		$resource->votes = 0;
 
 		if ($create) {
 			$resource->user_id = Auth::user()->id;
+			$resource->projects()->attach(Input::get('project_id'));
 		}
 
-		$resource->save();
-		
-		$resource->projects()->attach(Input::get('project_id'));
 		$resource->save();
 
 		return Redirect::action('ResourceController@show', $resource->id)

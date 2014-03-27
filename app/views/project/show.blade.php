@@ -42,6 +42,7 @@
             <tr>
                 <th>Name</th>
                 <th>Link</th>
+                <th>Body</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -49,11 +50,12 @@
 			<!-- At some point we want to arrange these in some order that makes sense-->
 			@foreach($project->resources as $resource)
 			<tr>
-				<td><a href="{{ action('ResourceController@show', $resource->id) }}" >{{ $resource->name }}</a></td>
+				<td><a href="{{ action('ResourceController@show', $resource->id) }}" >{{{ $resource->name }}}</a></td>
 				<td><a href="{{ $resource->url }}">External Link</a></td>
+				<td>{{{ $resource->body }}}</td>
 				<td>
-				<a href="{{ action('ResourceController@edit', $resource->id) }}" class="btn btn-default">Edit</a>   
-                <a href="{{ action('ResourceController@confirm', $resource->id) }}" class="btn btn-danger">Delete</a>
+					<a href="{{ action('ResourceController@edit', $resource->id) }}" class="btn btn-default">Edit</a>   
+                	<a href="{{ action('ResourceController@confirm', $resource->id) }}" class="btn btn-danger">Delete</a>
                 </td>
 			</tr>
 			@endforeach

@@ -15,7 +15,7 @@ See [INSTALL.md](https://github.com/knommon/knommon/blob/master/INSTALL.md).
 ## Coding Conventions
 
 #### Database
-All tables are lowercase with underscores. Tables should end in an 's' (i.e. users, projects). Relations should be singular (i.e. membership defines a users-to-projects relation).
+All tables are lowercase with underscores. Tables should end in an 's' (i.e. users, projects). 
 
 #### Whitespace 
 PHP files are tab-indented, HTML files are indented with 2 spaces.

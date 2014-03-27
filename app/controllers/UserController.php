@@ -111,34 +111,34 @@ class UserController extends Controller {
 		//@todo: check project's access, if open register automatically otherwise request to join
 		Project::findOrFail($id);
 		if (Auth::user()->join($id)) {
-			return Redirect::back()->with('status', "You joined successfully!");
+			return Redirect::action('ProjectController@show', $id)->with('status', "You joined successfully!");
 		}
-		return Redirect::back()->with('error', "You are already a member of this project!");
+		return Redirect::action('ProjectController@show', $id)->with('error', "You are already a member of this project!");
 	}
 
 	public function getLeave($id) {
 		Project::findOrFail($id);
 		if (Auth::user()->leave($id)) {
-			return Redirect::back()->with('status', "You have left the project!");
+			return Redirect::action('ProjectController@show', $id)->with('status', "You have left the project!");
 		}
-		return Redirect::back()->with('error', "You are not a member of this project!");
+		return Redirect::action('ProjectController@show', $id)->with('error', "You are not a member of this project!");
 	}
 
 	public function getFollow($id) {
 		$project = Project::findOrFail($id);
 		
 		if (Auth::user()->follow($id)) {
-			return Redirect::back()->with('status', "You are now following {$project->title}.");
+			return Redirect::action('ProjectController@show', $id)->with('status', "You are now following {$project->title}.");
 		}
-		return Redirect::back()->with('error', "You are already following this project.");
+		return Redirect::action('ProjectController@show', $id)->with('error', "You are already following this project.");
 	}
 
 	public function getUnfollow($id) {
 		$project = Project::findOrFail($id);
 		
 		if (Auth::user()->unfollow($id)) {
-			return Redirect::back();
+			return Redirect::action('ProjectController@show', $id);
 		}
-		return Redirect::back()->with('error', "You are not following this project.");
+		return Redirect::action('ProjectController@show', $id)->with('error', "You are not following this project.");
 	}
 }

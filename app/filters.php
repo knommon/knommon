@@ -44,6 +44,7 @@ Route::filter('auth.basic', function()
 	return Auth::basic();
 });
 
+//@todo: there may be a redirect loop here when project_id is not defined
 Route::filter('auth.access', function($route, $request, $mode = 'project') {
 	if (Auth::guest()) return Redirect::guest('user/login');
 
@@ -52,7 +53,7 @@ Route::filter('auth.access', function($route, $request, $mode = 'project') {
 	$action = explode('.', Route::currentRouteName());
 	$action = array_pop($action);
 	if (!$action) $action = 'edit';
-
+	//die(Route::getCurrentRoute()->getPath());
 	switch ($mode) {
 		case 'project':
 			//try to find a project id from eithe the URL or the input project_id field
@@ -64,9 +65,21 @@ Route::filter('auth.access', function($route, $request, $mode = 'project') {
 				$error = "You must be a member of this project to {$action} it.";
 			break;
 		case 'resource':
-			$id = Route::input('resources');
-			$resource = Resource::find($id);
-			if ($resource->user_id != $user->id)
+			$id = Route::input('id');
+			$id = (isset($id) ? $id : Route::input('resources'));
+			$id = (empty($id) ? Input::get('resource') : $id);
+
+			//SELECT r.resource_id, p.user_id FROM project_resource AS r JOIN members as p 
+			//ON r.project_id = p.project_id WHERE user_id = ? AND resource_id = ?;
+			$result = DB::table('project_resource')
+				->select(['project_resource.resource_id', 'members.user_id'])
+				->where('resource_id', '=', $id)
+				->join('members', function($join) use ($user) {
+					$join->on('project_resource.project_id', '=', 'members.project_id')
+						->where('user_id', '=', $user->id);
+				})->get();
+
+			if (empty($result))
 				$error = "You don't have access to {$action} this resource.";
 			break;
 	}

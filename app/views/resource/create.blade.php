@@ -6,7 +6,7 @@
     </div>
 
     {{ Form::open(array('url' => action('ResourceController@store'), 'method' => 'post' )) }}
-        <input type="hidden" name="projectid" value="{{Input::get('projectid')}}" />
+        <input type="hidden" name="project_id" value="{{Input::get('project_id')}}" />
         <div class="form-group">
             <label for="name">Name</label>
             <input type="text" class="form-control" name="name" />
