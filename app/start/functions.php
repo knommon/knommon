@@ -8,7 +8,7 @@ if (Config::get('app.debug')) {
 }
 
 HTML::macro('clever_link', function($route, $text) {
-	if (Request::path() == $route) {
+	if (strpos(Request::path(), $route) !== false) {
 		$active = "class = 'active'";
 	} else {
 		$active = '';

@@ -16,20 +16,24 @@
 	@show
 </head>
 <body>
+	<header>
 	<div class="header">
 		@include('layouts/header')
 	</div>
+	</header>
 	<div class="content">
 		<div class="container">
-			@if (($error = $errors->first('error')) || ($error = Session::get('error')))
+			@if (($error = $errors->first('error')) || ($error = Session::get('error')) || ($error = $errors->first()))
 				<div class="error alert alert-danger"> {{ $error }} </div>
 			@endif
 			@yield('content')
 		</div>
 	</div>
+	<footer>
 	<div class="footer">
 		@include('layouts/footer')
 	</div>
+	</footer>
 	@section('scripts')
 	@show
 </body>

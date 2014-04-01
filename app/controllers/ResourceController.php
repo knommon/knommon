@@ -1,21 +1,24 @@
 <?php
 
-/**
- * @todo: add user permissions for Resources like so:
- * is the current user in a project that contains this resource?
- */
+use Illuminate\Database\QueryException;
+
 class ResourceController extends Controller {
 
 	public function __construct() {
-		// for the user to be logged in to perform any action except view
-		$this->beforeFilter('auth.access:resource', array('except' => array('index', 'show')));
+		// for the user to be logged & a member of the project that the resource belongs to except for viewing it
+		$this->beforeFilter('auth.access:resource', array('except' => array('index', 'show', 'create', 'store')));
+		//must be logged in to create a new resource
+		//$this->beforeFilter('auth', array('only' => array('create', 'store')));
+		$this->beforeFilter('auth.access:project', array('only' => 'create', 'store'));
 	}
 
 	/**
 	 * Display a listing of the resource.
 	 */
 	public function index() {
-		$resources = Resource::orderBy('updated_at','desc')->take(10)->get();
+		$resources = Resource::with(array('projects' => function($query) {
+			$query->orderBy('updated_at','desc');
+		}))->take(10)->get();
 		return View::make('resource/index', compact('resources'));
 	}
 
@@ -97,10 +100,16 @@ class ResourceController extends Controller {
 	 */
 	protected function attemptEdit(Resource $resource, $create = false)
 	{
-		$validator = Validator::make(Input::all(), ['name' => 'required', 'body' => 'required']);
+		$rules = ['name' => 'required', 'body' => 'required'];
+		if ($create) {
+			$rules['project'] = 'required';
+		}
 
+		$validator = Validator::make(Input::all(), $rules);
 		if ($validator->fails()) {
-			$redirect = ($create) ? Redirect::action('ResourceController@create') : Redirect::action('ResourceController@edit', $resource->id);
+			$redirect = ($create) ? Redirect::to(URL::action('ResourceController@create') . '?project=' . Input::get('project')) :
+				Redirect::action('ResourceController@edit', $resource->id);
+
 			return $redirect->withInput(Input::all())->withErrors($validator);
 		}
 
@@ -111,13 +120,33 @@ class ResourceController extends Controller {
 		$resource->votes = 0;
 
 		if ($create) {
+			DB::beginTransaction();
 			$resource->user_id = Auth::user()->id;
-			$resource->projects()->attach(Input::get('project_id'));
 		}
 
 		$resource->save();
 
+		if ($create) {
+			$project_id = Input::get('project');
+
+			// make sure that the relation gets inserted too
+			try {
+				$resource->projects()->attach($project_id);
+				$resource->save();
+				DB::commit();
+			} catch (QueryException $e) {
+				DB::rollback();
+
+				Log::error('Error inserting project_resource relation with query "' . $e->getSql() . '" with parameters ' . print_r($e->getBindings(), true));
+				return Redirect::to(URL::action('ResourceController@create') . '?project=' . Input::get('project'))
+					->with('error', 'Error! Could not create the resource.');
+			}
+
+			return Redirect::action('ProjectController@show', $project_id)
+				->with('status', 'Resource created successfully!');
+		}
+
 		return Redirect::action('ResourceController@show', $resource->id)
-			->with('status', "Resource " . ($create ? 'created' : 'updated') . " successfully!");
+			->with('status', "Resource updated successfully!");
 	}
 }

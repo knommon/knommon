@@ -64,6 +64,7 @@ class SocialController extends Controller {
 				->where('provider', '=', $providerName)
 				->take(1)->first();
 
+			$redirect = '/';
 			$id;
 			//couldn't find an account in the database
 			if (count($result) == 0) {
@@ -93,9 +94,8 @@ class SocialController extends Controller {
 
 				$this->createAccount($id, $providerName, $profile, $token);
 
-				//should we have a welcome page specifically or set a bool welcome on user?
-				//Auth::loginUsingId($id);
-				//return Redirect::intended('user/welcome');
+				//@todo: should we have a welcome page specifically or set a bool welcome on user?
+				$redirect = 'user/welcome';
 			} else {
 				$id = $result->user_id;
 				//update existing social account credentials
@@ -109,7 +109,7 @@ class SocialController extends Controller {
 			
 			Auth::loginUsingId($id);
 
-			return Redirect::intended('/');
+			return Redirect::intended($redirect);
 
 		} catch (Exception $e) {
 			$error = '';

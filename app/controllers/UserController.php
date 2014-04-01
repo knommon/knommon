@@ -106,6 +106,14 @@ class UserController extends Controller {
 		return View::make('user.welcome');
 	}
 
+	//@todo: should this be /user/{id}/profile instead of /user/profile/{id} ?
+	public function getProfile($id) {
+		$user = User::findOrFail($id);
+		$currUser = Auth::user();
+
+		return View::make('user.profile', array('user' => $user));
+	}
+
 	//@todo: make these all one post request, postProject/Subscribe with paramers for the method
 	public function getJoin($id) {
 		//@todo: check project's access, if open register automatically otherwise request to join

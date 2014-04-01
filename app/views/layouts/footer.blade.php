@@ -1,3 +1,5 @@
 @section('footer')
-	<!--footer with important notices, sticks to bottom -->
+  <div class="container">
+    
+  </div>
 @show

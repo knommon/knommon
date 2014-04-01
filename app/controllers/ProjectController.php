@@ -1,13 +1,12 @@
 <?php
 
-/**
- * @todo: add user permissions for Projects
- */
 class ProjectController extends Controller {
 
 	public function __construct() {
-		// for the user to be logged & a member of the project to perform any action except view, create/store
+		// the user must be a member of the project to perform any action except view, create & store
 		$this->beforeFilter('auth.access:project', array('except' => array('index', 'show', 'create', 'store')));
+		// must be logged in to create/store a new project
+		$this->beforeFilter('auth', array('only' => array('create', 'store')));
 	}
 
 	/**

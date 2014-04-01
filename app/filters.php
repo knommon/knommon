@@ -59,6 +59,8 @@ Route::filter('auth.access', function($route, $request, $mode = 'project') {
 			//try to find a project id from eithe the URL or the input project_id field
 			$project = Route::input('projects');
 			$project = (empty($project) ? Input::get('project_id') : $project);
+			$project = (empty($project) ? Input::get('project') : $project);
+
 			if (empty($project)) {
 				$error = "Could not find the specified project.";
 			} else if (!$user->isMember($project))
@@ -74,20 +76,26 @@ Route::filter('auth.access', function($route, $request, $mode = 'project') {
 			$result = DB::table('project_resource')
 				->select(['project_resource.resource_id', 'members.user_id'])
 				->where('resource_id', '=', $id)
+				->where('user_id', '=', $user->id)
 				->join('members', function($join) use ($user) {
-					$join->on('project_resource.project_id', '=', 'members.project_id')
-						->where('user_id', '=', $user->id);
+					$join->on('project_resource.project_id', '=', 'members.project_id');
 				})->get();
 
 			if (empty($result))
-				$error = "You don't have access to {$action} this resource.";
+				$error = "You don't have access to this resource.";
+
 			break;
 	}
 
 	if ($error != null) {
 		$errors = new \Illuminate\Support\MessageBag();
 		$errors->add('error', $error);
-		return Redirect::back()->withErrors($errors);
+
+		try {
+			return Redirect::back()->withErrors($errors);
+		} catch (InvalidArgumentException $e) {
+			return Redirect::to('/');
+		}
 	}
 });
 

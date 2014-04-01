@@ -34,6 +34,8 @@ Caching:
 Redis / Varnish / Memcached?  
 https://github.com/TheMonkeys/laravel-blade-cache-filter
 
+http://laravel.com/docs/queries#caching-queries
+
 Deploying:  
 http://code.tutsplus.com/tutorials/deploying-a-laravel-application-using-capistrano--net-35685
 

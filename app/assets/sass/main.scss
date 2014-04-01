@@ -20,81 +20,151 @@
 @import "compass/css3/appearance";
 @import "compass/css3/user-interface";
 @import "compass/css3/background-size";
-$core-sprite-dimensions: true;
-$core-layout: "smart";
-//@import "core/*.png";
-//@include all-core-sprites;
+$image-sprite-dimensions: true;
+$image-layout: "smart";
+//@import "image/*.png";
+//@include all-image-sprites;
 
 body {
-	width: 100%;
-	font-family: $default-font;
-	-webkit-font-smoothing: antialiased;
-	text-rendering: optimizeLegibility;
+  width: 100%;
+  font-family: $default-font;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 input {
-	-webkit-font-smoothing: antialiased;
-	text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.navbar {
+  @include border-radius(0px);
+}
+
+form {
+  textarea {
+    min-height: 150px;
+  }
 }
 
 //@todo: icon sprites next to each button
 $profiles: (facebook: #3b5998, google: #dd4b39, twitter: #00aced, github: #4183c4, linkedin: #007bb6);
 
 .social-buttons {
-	@each $profile, $color in $profiles {
-		.#{$profile} {
-			color: white;
-			background: $color;
-			&:hover {
-				background: lighten($color, 5%);
-			}
-		}
-	}
+  @each $profile, $color in $profiles {
+    .#{$profile} {
+      color: white;
+      background: $color;
+      &:hover {
+        background: lighten($color, 5%);
+      }
+    }
+  }
 
-	.btn {
-		@include border-radius(2px);
-		padding: 8px 20px;
-		border: none;
-	}
+  .btn {
+    @include border-radius(2px);
+    padding: 8px 20px;
+    border: none;
+  }
 }
 
 .team {
-	@include clearfix;
-	margin-bottom: 15px;
+  @include clearfix;
+  margin-bottom: 15px;
 
-	.member {
-		position: relative;
-		display: inline-block;
-		float: left;
-		margin-right: 15px;
-		&:last-child {
-			margin-right: 0;
-		}
+  .member {
+    position: relative;
+    display: inline-block;
+    float: left;
+    margin-right: 15px;
+    padding-bottom: 10px; 
+    &:last-child {
+      margin-right: 0;
+    }
 
-		&:hover > a img {
-			@include opacity(0.8);
-		}
+    &:hover > a img {
+      @include opacity(0.8);
+    }
 
-		img {
-			@include border-radius(12px);
-			@include transition(opacity .4s);
-		}
-	}
-	.name {
-		display: block;
-		text-align: center;
-	}
+    img {
+      @include border-radius(12px);
+      @include transition(opacity .4s);
+    }
+  }
+  .name {
+    display: block;
+    text-align: center;
+  }
 
-	a {
-		position: block;
-		width:100%;
-		height:100%;
-		top:0;
-		left:0;
-		display: block;
-	}
+  a {
+    position: block;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    display: block;
+  }
 }
 
 .tagline {
-	display: block;
+  display: block;
+  margin-top: 6px;
+}
+
+.tile-row {
+  max-width: 970px;
+  margin: 0 auto;
+
+  > div {
+    @media (min-width: $screen-md-min) {
+      &:nth-child(3n + 1) {
+        clear: left;
+      }
+    }
+
+    @media (max-width: $screen-md-min) {
+      &:nth-child(2n + 1) {
+        clear: left;
+      }
+    }
+  }
+
+  .project {
+    @media (min-width: $screen-sm-min) {
+      //height: 390px; //use with images
+      height: 196px; //without images
+    }
+  }
+
+  .thumbnail {
+    @include border-radius(0px);
+
+    @media (max-width: $screen-sm-min) {
+      h3, p {
+        text-align: center;
+      }
+    }
+
+    h3 {
+      margin-top: 0;
+    }
+
+    a {
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    .caption {
+      padding: 4px 9px;
+    }
+  }
+}
+
+.about p {
+  max-width: 700px;
+}
+
+.action {
+  margin-bottom: 20px;
 }
