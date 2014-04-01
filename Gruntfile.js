@@ -53,7 +53,7 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		watch: {
+		livereload: {
 			sass: {
 				files: ['app/assets/sass/**/*.scss'],
 				tasks: ['compass:dev']
@@ -67,6 +67,16 @@ module.exports = function(grunt) {
 				options: {
 					livereload: true
 				}
+			}
+		},
+		watch: {
+			sass: {
+				files: ['app/assets/sass/**/*.scss'],
+				tasks: ['compass:dev']
+			},
+			js: {
+				files: ['app/assets/js/*.js'], // 'components/**/*.js'
+				tasks: ['concat', 'uglify']
 			}
 		}
 	});
