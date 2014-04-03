@@ -47,6 +47,10 @@ form {
   }
 }
 
+p {
+  font-size: 16px;
+}
+
 //@todo: icon sprites next to each button
 $profiles: (facebook: #3b5998, google: #dd4b39, twitter: #00aced, github: #4183c4, linkedin: #007bb6);
 
@@ -169,11 +173,23 @@ $profiles: (facebook: #3b5998, google: #dd4b39, twitter: #00aced, github: #4183c
   margin-bottom: 20px;
 }
 
+.footer {
+  //color??
+  margin-top: 30px;
+  margin-bottom: 25px;
+}
+
 .footer-links {
+
   display: table;
   margin: auto;
   li {
     float: left;
     padding-right: 15px;
   }
+}
+
+.front-center {
+  display: table;
+  margin: auto;
 }

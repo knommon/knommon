@@ -2,6 +2,9 @@
 
 //default to a list of projects for now - homepage to come
 Route::get('/', 'ProjectController@index');
+Route::get('/about', function(){
+	return View::make('about');
+});
 
 // User routes
 Route::controller('user', 'UserController');
