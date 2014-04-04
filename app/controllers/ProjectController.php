@@ -141,6 +141,13 @@ class ProjectController extends Controller {
 			$user->join($project->id);
 		}
 
+		//cycle through comma separated tag input and add the new tags and associate all the tags
+		$tags = explode(",", Input::get('tags'));
+
+		foreach ($tags as $tagname) {
+			
+		}
+
 		return Redirect::action('ProjectController@show', $project->id)
 			->with('status', "Project " . ($create ? 'created' : 'updated') . " successfully!");
 	}

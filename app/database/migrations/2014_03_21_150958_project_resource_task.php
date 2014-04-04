@@ -23,7 +23,7 @@ class ProjectResourceTask extends Migration {
 			$table->string('title');
 			$table->string('slug');
 			$table->text('about');
-			$table->string('tagline', 255)->after('title');
+			$table->string('tagline', 255);
 			$table->timestamps();
 		});
 

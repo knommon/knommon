@@ -26,6 +26,13 @@
                 <div class="error"> {{ $error }} </div>
             @endif
         </div>
+        <div class="form-group">
+            <label for="tags">Tags (comma-separated)</label>
+            <input type="text" class="form-control" name="tags">{{ Input::old('tags') }}</textarea>
+            @if ($error = $errors->first('tags'))
+                <div class="error"> {{ $error }} </div>
+            @endif
+        </div>
         <input type="submit" value="Create" class="btn btn-primary" />
         <a href="{{ action('ProjectController@index') }}" class="btn btn-link">Cancel</a>
     {{ Form::close() }}

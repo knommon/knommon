@@ -41,8 +41,8 @@ class UserRelations extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('membership');
-		Schema::dropIfExists('follow');
+		Schema::dropIfExists('members');
+		Schema::dropIfExists('follows');
 	}
 
 }
