@@ -4,13 +4,12 @@ use Illuminate\Support\MessageBag;
 
 define('WELCOME_MESSAGE', 'Thanks for registering!');
 define('ERROR_MESSAGE', 'The following errors occurred:');
+define('LOGIN_LANDING', '/projects');
 
 /**
  * @todo: make the project join/leave follow/unfollow actions POST requests
  */
 class UserController extends Controller {
-
-	const HOME_ROUTE = '/';
 
 	public function __construct() {
 		$this->beforeFilter('csrf', array('on' => 'post'));
@@ -19,10 +18,18 @@ class UserController extends Controller {
 		)));
 	}
 
+	public function index() {
+		if (Auth::check()) {
+			return Redirect::action('ProjectController@index');
+		}
+
+		return View::make('hello');
+	}
+
 	public function getLogin() {
 		// if we're already logged in
 		if (Auth::check()) {
-			return Redirect::to('/');
+			return Redirect::to(LOGIN_LANDING);
 		}
 
 		return View::make('user.login');
@@ -40,7 +47,7 @@ class UserController extends Controller {
 
 		if (($passes = $validator->passes()) && Auth::attempt($login, $remember)) {
 			//@todo: ideally put ?continue=URL in the url
-			return Redirect::intended('/');
+			return Redirect::intended(LOGIN_LANDING);
 		}
 		
 		if ($passes) {
@@ -85,7 +92,7 @@ class UserController extends Controller {
 
 			Auth::loginUsingId($id);
 
-			return Redirect::to('user/welcome')
+			return Redirect::to(LOGIN_LANDING)
 				->with('message', WELCOME_MESSAGE);
 		} else {
 			return Redirect::to('user/register')

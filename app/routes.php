@@ -1,15 +1,16 @@
 <?php
 
-//default to a list of projects for now - homepage to come
-Route::get('/', 'ProjectController@index');
-Route::get('/about', function(){
+Route::get('/', function() {
+	return View::make('hello');
+});
+Route::get('/about', function() {
 	return View::make('about');
 });
 
 // User routes
 Route::controller('user', 'UserController');
 Route::controller('password', 'RemindersController');
-Route::controller('social', 'SocialController', array(
+Route::controller('auth', 'SocialController', array(
 	'getFacebook' => 'facebook', 'getTwitter' => 'twitter', 'getGoogle' => 'google',
 ));
 

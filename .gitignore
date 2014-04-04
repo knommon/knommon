@@ -20,7 +20,9 @@ public/images
 public/css
 public/js
 public/assets/*
-app/assets/public/*
+app/assets/public/images/images*.png
+app/assets/public/css/*
+app/assets/public/js/*
 public/packages/
 
 # Temporary files

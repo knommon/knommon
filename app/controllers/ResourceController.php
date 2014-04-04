@@ -8,7 +8,6 @@ class ResourceController extends Controller {
 		// for the user to be logged & a member of the project that the resource belongs to except for viewing it
 		$this->beforeFilter('auth.access:resource', array('except' => array('index', 'show', 'create', 'store')));
 		//must be logged in to create a new resource
-		//$this->beforeFilter('auth', array('only' => array('create', 'store')));
 		$this->beforeFilter('auth.access:project', array('only' => 'create', 'store'));
 	}
 

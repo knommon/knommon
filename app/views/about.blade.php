@@ -19,12 +19,12 @@
 <div class="row">
 	<div class="col-xs-8">
 		<h2> Why?</h2>
-		<p>We love learning. Sitting and listening never quite worked though - we had to actually get our hands dirty to really
+		<p>We love learning. Sitting and listening never quite worked though &mdash; we had to actually get our hands dirty to really
 		get it. We made the site so that anyone who learns through projects can find like-minded people to work with.</p>
 
 		<h2>Projects!</h2>
 		<p>Projects do a few cool things. For one, they <strong>bring people together.</strong> We at knommon love community, and 
-			as cool as the distributed world is, we like person-to-person interaction in real life - especially when that interaction
+			as cool as the distributed world is, we like person-to-person interaction in real life &mdash; especially when that interaction
 			means working on cool stuff with a diverse team. Second, projects <strong>force you to confront skill gaps.</strong> In a 
 			class or from a book, you can sometimes sneak by without a complete understanding. When you have to actually make it happen,
 			you know you will understand it. </p>
@@ -43,7 +43,8 @@
 	{{-- image here --}}			
 	</div>
 </div>
-				
+
+{{-- @todo: make the about page an alias for our project page for knommon? --}}
 {{-- We should see what we want with this section. Also, images on this page!!
 
 <div class="row">
@@ -60,10 +61,9 @@
 <div class="row">
 	<div class="col-xs-8">
 		<h2> Get in touch</h2>
-		<p>We are just getting started, and we love feedback! Bugs, features you'd like to see, life advice - we want all
+		<p>We are just getting started, and we love feedback! Bugs, features you'd like to see, life advice &mdash; we want all
 		 of it. Have questions or need tips on a project? We'd be happy to help with that too! </p>
-		 <p class="text-center"><a href="mailto:hello@knommon.com">Email</a></p> 
-		 <p class="text-center"><a href="https://twitter.com/knommon">Twitter</a></p>
+		 <p class="text-center"><a href="mailto:hello@knommon.com">Send Us an Email</a></p> 
 	</div>
 </div>
 
