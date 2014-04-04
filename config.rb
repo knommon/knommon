@@ -1,28 +1,26 @@
 # Require any additional compass plugins here.
-development = true
+development = (environment != :production)
 
 # Set this to the root of your project when deployed:
-http_path = "/"
-css_dir = "app/assets/public/css"
-sass_dir = "app/assets/sass"
-images_dir = "app/assets/images"
-generated_images_dir = "app/assets/public/images"
-javascripts_dir = "app/assets/public/js"
-http_generated_images_path = "images"
+project_path = "app/assets"
+#http_path = "/"
+css_dir = "public/css"
+sass_dir = "sass"
+images_dir = "images"
+generated_images_dir = "public/images"
+javascripts_dir = "public/js"
+http_generated_images_path = "/images"
 
 # You can select your preferred output style here (can be overridden via the command line):
 # output_style = :expanded or :nested or :compact or :compressed
-# Development
 if development
-	#output_style = :expanded
-	#environment = :development
-else # Production
-	#output_style = :compressed
-	#environment = :production
+	output_style = :expanded
+else
+	output_style = :compressed
 end
 
 # To enable relative paths to assets via compass helper functions. Uncomment:
-# relative_assets = true
+relative_assets = true
 
 # To disable debugging comments that display the original location of your selectors. Uncomment:
 # line_comments = false

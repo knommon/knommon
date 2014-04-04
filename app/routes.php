@@ -1,16 +1,18 @@
 <?php
 
-Route::get('/', function() {
-	return View::make('hello');
-});
-Route::get('/about', function() {
-	return View::make('about');
-});
+// General pages
+Route::get('/', function() { return View::make('hello'); });
+Route::get('/about', function() { return View::make('about'); });
+
+// Patterns
+Route::pattern('id', '\d+');
+Route::pattern('hash', '[a-z0-9]+');
+Route::pattern('slug', '[a-z0-9-]+');
 
 // User routes
 Route::controller('user', 'UserController');
 Route::controller('password', 'RemindersController');
-Route::controller('auth', 'SocialController', array(
+Route::controller('social', 'SocialController', array(
 	'getFacebook' => 'facebook', 'getTwitter' => 'twitter', 'getGoogle' => 'google',
 ));
 
@@ -19,4 +21,5 @@ Route::resource('projects', 'ProjectController');
 Route::resource('resources', 'ResourceController');
 Route::get('projects/confirm/{id}', 'ProjectController@confirm');
 Route::get('resources/confirm/{id}', 'ResourceController@confirm');
-Route::post('resources/create', 'ResourceController@create');
+
+Route::get('projects/{id}/{slug?}', array('as' => 'project.show', 'uses' => 'ProjectController@show'));

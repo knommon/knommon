@@ -6,9 +6,9 @@
 
 @section('content')
 	<div class="social-buttons social-buttons-login form-group">
-		<a href="{{ URL::route('facebook') }}" class="btn btn-default facebook">Login with Facebook</a>
-		<a href="{{ URL::route('twitter') }}" class="btn btn-default twitter">Login with Twitter</a>
-		<a href="{{ URL::route('google') }}" class="btn btn-default google">Login with Google</a>
+		<a href="{{ URL::route('facebook') }}" class="btn facebook">Login with Facebook</a>
+		<a href="{{ URL::route('twitter') }}" class="btn twitter">Login with Twitter</a>
+		<a href="{{ URL::route('google') }}" class="btn google">Login with Google</a>
 	</div>
 	<h2>Sign In</h2>
 	{{ Form::open(['url' => 'user/login', 'autocomplete' => 'off', 'class' => 'pure-form pure-form-stacked']) }}

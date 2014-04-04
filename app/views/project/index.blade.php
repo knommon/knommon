@@ -21,7 +21,7 @@
             <div class="thumbnail project">
               {{--<img alt="..." src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIj48cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2VlZSI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjE1MCIgeT0iMTAwIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjE5cHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+MzAweDIwMDwvdGV4dD48L3N2Zz4=">--}}
               <div class="caption">
-                <h3><a href="{{ ($link = action('ProjectController@show', $project->id)) }}">
+                <h3><a href="{{ ($link = URL::route('project.show', array('id' => $project->id, 'slug' => $project->slug))) }}">
                     {{{ $project->title }}}
                 </a></h3>
                 <p>{{{ Str::limit($project->about, 180) }}}</p>

@@ -55,11 +55,14 @@
     <h3>Why?</h3>
     <p>You don't need a degree to build great things. In the real world, there aren't any tests. There's no grading and there's certainly no failing. All you have is what you can do with what you know.
     <i>What would you do if you knew you couldn't fail?</i></p>
-    <div class="social-buttons social-buttons-register form-group">
-      <a href="{{ URL::route('facebook') }}" class="btn btn-default facebook">Register with Facebook</a>
-      <a href="{{ URL::route('twitter') }}" class="btn btn-default twitter">Register with Twitter</a>
-      <a href="{{ URL::route('google') }}" class="btn btn-default google">Register with Google</a>
-      <span class="email-register"><a href="{{ url('user/register') }}">Or Register with Email</a></span>
+
+    <div class="row">
+      <div class="social-buttons social-buttons-register form-group">
+        <a href="{{ URL::route('facebook') }}" class="btn facebook">Register with Facebook</a>
+        <a href="{{ URL::route('twitter') }}" class="btn twitter">Register with Twitter</a>
+        <a href="{{ URL::route('google') }}" class="btn google">Register with Google</a>
+        <span class="email-register"><a href="{{ url('user/register') }}">Or Register with Email</a></span>
+      </div>
     </div>
   </div>
 </div>

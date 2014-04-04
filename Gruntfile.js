@@ -12,8 +12,7 @@ module.exports = function(grunt) {
 				options: {
 					environment: 'development',
 					config: 'config.rb',
-					outputStyle: 'expanded',
-					force: true
+					outputStyle: 'expanded'
 				},
 				files: {
 					'app/assets/public/css/main.css': 'app/assets/sass/main.scss'
@@ -23,8 +22,7 @@ module.exports = function(grunt) {
 				options: {
 					environment: 'production',
 					config: 'config.rb',
-					outputStyle: 'compressed',
-					force: true
+					outputStyle: 'compressed'
 				},
 				files: {
 					'app/assets/public/css/main.css': 'app/assets/sass/main.scss'
@@ -63,7 +61,7 @@ module.exports = function(grunt) {
 				tasks: ['concat', 'uglify']
 			},
 			livereload: {
-				files: ['app/views/*.php', 'app/assets/public/css/*.css', 'public/images/*', 'app/assets/public/js/*.js'],
+				files: ['app/views/*.php', 'app/assets/public/css/*.css', 'app/assets/public/images/*', 'app/assets/public/js/*.js'],
 				options: {
 					livereload: true
 				}

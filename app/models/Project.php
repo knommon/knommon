@@ -34,4 +34,9 @@ class Project extends Eloquent {
 		return $this->belongsToMany('User', 'follows');
 	}
 
+	public function setTitleAttribute($title)
+	{
+		$this->attributes['title'] = $title;
+		$this->attributes['slug'] = Str::limit(Str::slug($title), 255);
+	}
 }

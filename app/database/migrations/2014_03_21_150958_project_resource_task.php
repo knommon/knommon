@@ -21,6 +21,7 @@ class ProjectResourceTask extends Migration {
 			$table->unsignedInteger('user_id');
 			$table->foreign('user_id')->references('id')->on('users');
 			$table->string('title');
+			$table->string('slug');
 			$table->text('about');
 			$table->string('tagline', 255)->after('title');
 			$table->timestamps();

@@ -5,9 +5,9 @@
 
 @section('content')
 	<div class="social-buttons social-buttons-register form-group">
-		<a href="{{ URL::route('facebook') }}" class="btn btn-default facebook">Register with Facebook</a>
-		<a href="{{ URL::route('twitter') }}" class="btn btn-default twitter">Register with Twitter</a>
-		<a href="{{ URL::route('google') }}" class="btn btn-default google">Register with Google</a>
+		<a href="{{ URL::route('facebook') }}" class="btn facebook">Register with Facebook</a>
+		<a href="{{ URL::route('twitter') }}" class="btn twitter">Register with Twitter</a>
+		<a href="{{ URL::route('google') }}" class="btn google">Register with Google</a>
 	</div>
 	{{ Form::open(array('url'=>'user/create', 'class'=>'form-signup')) }}
 		<h2 class="form-signup-heading">Create an Account</h2>

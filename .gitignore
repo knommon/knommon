@@ -21,6 +21,7 @@ public/css
 public/js
 public/assets/*
 app/assets/public/images/images*.png
+app/assets/public/images/icon-*.png
 app/assets/public/css/*
 app/assets/public/js/*
 public/packages/

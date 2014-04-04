@@ -37,11 +37,16 @@ class ProjectController extends Controller {
 	 * Display the specified project.
 	 * @param int $id project id
 	 */
-	public function show($id)
+	public function show($id, $slug = null)
 	{
 		$project = Project::findOrFail($id);
-		$team = $project->users()->get();
 
+		// force slugs on URLs
+		if ($slug == null || $project->slug !== $slug) {
+			return Redirect::route('project.show', array('id' => $project->id, 'slug' => $project->slug), 301);
+		}
+
+		$team = $project->users()->get();
 		$follows = $isMember = false;
 
 		if (Auth::check()) {

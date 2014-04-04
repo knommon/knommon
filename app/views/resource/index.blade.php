@@ -20,7 +20,7 @@
               <p>{{{ $resource->body }}}</p>
               <ul>
                 @foreach($resource->projects as $project)
-                  <li><a href="{{ action('ProjectController@show', $project->id) }}">{{$project->title}}</a></li>
+                  <li><a href="{{ URL::route('project.show', array('id' => $project->id, 'slug' => $project->slug)) }}">{{$project->title}}</a></li>
                 @endforeach
               </ul>
             </div>
