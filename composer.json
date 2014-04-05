@@ -8,7 +8,8 @@
 		"hybridauth/hybridauth": "dev-master",
 		"nesbot/Carbon": "*",
 		"felixkiss/uniquewith-validator": "1.0.*",
-		"jyggen/curl": "dev-master"
+		"jyggen/curl": "dev-master",
+		"rtconner/laravel-tagging": "dev-master"
 	},
 	"require-dev": {
 		"darsain/laravel-console": "dev-master",

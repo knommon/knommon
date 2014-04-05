@@ -4,13 +4,10 @@
   {{$project->title}} | Knommon
 @stop
 
-@section('content')
-  @if ($status = Session::get('status'))
-    <div class="alert alert-success">{{ $status }}</div>
-  @endif
-  <h1>{{ $project->title }} <small class="tagline"> {{ $project->tagline }}</small></h1>
-  
+@section('content')  
   {{-- Project actions depending on auth status--}}
+  <h1>{{ $project->title }}<small class="tagline"> {{ $project->tagline }}</small></h1>
+
   @if ($isMember)
     <p><a href="{{ action('ProjectController@edit', $project->id) }}" class="btn btn-default">Edit</a></p>
   @else
@@ -62,15 +59,16 @@
   @if (($resources = $project->resources) && !$resources->isEmpty())
     <div class="row tile-row resources">
       @foreach ($resources as $resource)
+        <?php $resource->id = $resource->resource_id; ?> {{-- postgres laravel hack ? --}}
           <div class="thumbnail resource">
             <div class="caption">
               <h3><a href="{{{ $resource->url }}}" target="_blank">
                   {{{ $resource->name }}}
-              </a></h3>
+              <span class="link"> &mdash; {{ $resource->url }}</span></a></h3>
               <p>{{{ $resource->body }}}</p>
               @if ($isMember)
                 <div class="actions">
-                  <a href="{{ action('ResourceController@edit', $resource->resource_id) }}" class="btn btn-default">Edit</a>
+                  <a href="{{ action('ResourceController@edit', $resource->resource_id) . '?project=' . $project->id }}" class="btn btn-default">Edit</a>
                   <a href="{{ action('ResourceController@confirm', $resource->resource_id) }}" class="btn btn-danger">Delete</a>
                 </div>
               @endif
@@ -78,7 +76,7 @@
               {{-- display tags + this is likely n+1--}}  
             <div class="tags">
                 @foreach($resource->tagged()->get()->toArray() as $tag)
-                    <span class="tag"><a href="{{ URL::route('tag.show', array('slug' => $tag['tag_slug'])) }}" class="btn btn-default">{{ $tag['tag_name'] }}</a></span>
+                  <span class="tag"><a href="{{ URL::route('tag.show', array('slug' => $tag['tag_slug'])) }}" class="btn btn-default">{{ $tag['tag_name'] }}</a></span>
                 @endforeach
             </div>
           </div>
@@ -86,6 +84,6 @@
       @endforeach
     </div>
   @else
-    There are no resources related to this project yet.
+    <p>There are no resources related to this project yet.</p>
   @endif
 @stop

@@ -2,7 +2,7 @@
 
 @section('content')
 
-<h2>Projects tagged with {{ $tag }}<h2>
+<h2>Projects tagged with {{ $tag }}</h2>
 
 @if ($projects->isEmpty())
     <p>There are no projects with this tag! :(</p>

@@ -5,6 +5,7 @@
         <h1>Edit {{ $resource->name }} </h1>
     </div>
     {{ Form::open(array('url' => action('ResourceController@update', $resource->id), 'method' => 'put' )) }}
+        <input type="hidden" name="project" value="{{ Input::get('project') }}"/>
         <div class="form-group">
             <label for="name">Name</label>
             <input type="text" class="form-control" name="name" value="{{ $resource->name }}"  />

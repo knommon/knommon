@@ -19,10 +19,16 @@
   </div>
   <div class="row">
     <h2 class="tagline">
-      A community of innovators learning by doing, <br>together.
+      What do you want to do?
     </h2>
     <div class="section">
-      <a href="/projects" class="btn btn-danger">Browse Projects</a>
+      <div class="col-md-8" style="margin: 0 auto; float: none;">
+        <form action="/projects" method="get">
+          <input type="text" class="form-control" placeholder="Create a Website" style="margin-bottom:10px;" />
+          <a href="/projects" class="btn btn-danger">Browse Projects</a>
+          <a href="/projects/create" class="btn btn-default">Create Project</a>
+        </form>
+      </div>
     </div>
   </div>
 </div>

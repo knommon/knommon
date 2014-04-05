@@ -133,9 +133,9 @@ class ResourceController extends Controller {
 			$resource->tag($tagname);
 		}
 
-		if ($create) {
-			$project_id = Input::get('project');
+		$project_id = Input::get('project');
 
+		if ($create) {
 			// make sure that the relation gets inserted too
 			try {
 				$resource->projects()->attach($project_id);
@@ -147,13 +147,11 @@ class ResourceController extends Controller {
 				Log::error('Error inserting project_resource relation with query "' . $e->getSql() . '" with parameters ' . print_r($e->getBindings(), true));
 				return Redirect::to(URL::action('ResourceController@create') . '?project=' . Input::get('project'))
 					->with('error', 'Error! Could not create the resource.');
+			}
 		}
 
-			return Redirect::action('ProjectController@show', $project_id)
-				->with('status', 'Resource created successfully!');
-		}
-
-		return Redirect::action('ResourceController@show', $resource->id)
-			->with('status', "Resource updated successfully!");
+		//@todo: fix session variables bug - no message is being displayed
+		return Redirect::action('ProjectController@show', $project_id)
+			->with('status', 'Resource created successfully!');
 	}
 }
