@@ -25,7 +25,9 @@
                     {{{ $project->title }}}
                 </a></h3>
                 <p>{{{ Str::limit($project->about, 180) }}}</p>
-                <span class="location"></span>
+                @if ($loc = $project->location)
+                  <span class="location">{{ $loc->locality }}, {{ $loc->state }}</span>
+                @endif
               </div>
             </div>
           </div>

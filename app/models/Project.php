@@ -41,4 +41,9 @@ class Project extends Eloquent {
 		$this->attributes['title'] = $title;
 		$this->attributes['slug'] = Str::limit(Str::slug($title), 255);
 	}
+
+	public function location()
+	{
+		return $this->belongsTo('Location');
+	}
 }

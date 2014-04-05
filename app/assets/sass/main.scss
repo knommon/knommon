@@ -45,7 +45,7 @@ input {
 
 form {
   textarea {
-    min-height: 150px;
+    min-height: 100px;
   }
 }
 
@@ -136,13 +136,17 @@ q {
     margin: 40px 0 0 0;
 
     .btn:not(.btn-default) {
-      border:none;
-      padding: 8px 14px;
       background: $primary;
 
       &:hover {
         background: tint($primary, 10%);
       }
+    }
+
+    .btn {
+      margin-bottom: 8px;
+      border:none;
+      padding: 8px 14px;
     }
   }
 }
@@ -310,9 +314,16 @@ $profiles: (facebook: #3b5998, google: #dd4b39, twitter: #00aced);
   }
 
   .project {
+    position: relative;
     @media (min-width: $screen-sm-min) {
       //height: 390px; //use with images
-      height: 196px; //without images
+      height: 216px; //without images
+    }
+
+    .location {
+      position: absolute;
+      bottom: 0;
+      padding: 8px 0;
     }
   }
 

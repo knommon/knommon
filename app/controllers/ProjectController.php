@@ -1,5 +1,7 @@
 <?php
 
+use Jyggen\Curl\Curl;
+
 class ProjectController extends Controller {
 
 	public function __construct() {
@@ -13,7 +15,7 @@ class ProjectController extends Controller {
 	 * Display a listing of the project.
 	 */
 	public function index() {
-		$projects = Project::orderBy('updated_at', 'desc')->get();
+		$projects = Project::with(array('location'))->orderBy('updated_at', 'desc')->get();
 		return View::make('project/index', compact('projects'));
 	}
 
@@ -21,7 +23,9 @@ class ProjectController extends Controller {
 	 * Show the form for creating a new project.
 	 */
 	public function create() {
-		return View::make('project/create');
+		$response = Curl::get('http://www.telize.com/geoip')[0];
+		$data = json_decode($response->getContent());
+		return View::make('project/create', array('geoip' => $data));
 	}
 
 	/**
@@ -134,6 +138,11 @@ class ProjectController extends Controller {
 		
 		if ($create) {
 			$project->user_id = $user->id;
+
+			$lat = Input::get('latitude');
+			$lon = Input::get('longitude');
+			$location = $this->createOrReturnLocation($lat, $lon);
+			$project->location_id = $location->id;
 		}
 
 		$project->save();
@@ -153,5 +162,33 @@ class ProjectController extends Controller {
 
 		return Redirect::action('ProjectController@show', $project->id)
 			->with('status', "Project " . ($create ? 'created' : 'updated') . " successfully!");
+	}
+
+	//@todo: check for duplicate locations
+	public function createOrReturnLocation($lat, $lon) {
+		$response = Curl::get("http://maps.googleapis.com/maps/api/geocode/json?latlng={$lat},{$lon}&sensor=true")[0];
+		$data = array_shift(json_decode($response->getContent())->results);
+
+		$location = $data->geometry->location;
+		$lat = $location->lat;
+		$lon = $location->lng;
+		
+		$location = new Location;
+		$location->position = array($lat, $lon);
+
+		$str = '';
+		foreach ($data->address_components as $addr) {
+			$type = array_shift($addr->types);
+			if (in_array($type, Location::$columns)) {
+				$location->{$type} = $addr->long_name;
+				if ($type == 'administrative_area_level_1') {
+					$location->state = $addr->short_name;
+				}
+			}
+		}
+
+		$location->save();
+
+		return $location;
 	}
 }

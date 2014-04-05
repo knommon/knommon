@@ -73,7 +73,7 @@
                 </div>
               @endif
 
-              {{-- display tags + this is likely n+1--}}  
+              {{-- display tags + this is likely n+1--}}
             <div class="tags">
                 @foreach($resource->tagged()->get()->toArray() as $tag)
                   <span class="tag"><a href="{{ URL::route('tag.show', array('slug' => $tag['tag_slug'])) }}" class="btn btn-default">{{ $tag['tag_name'] }}</a></span>
