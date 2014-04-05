@@ -342,6 +342,19 @@ $profiles: (facebook: #3b5998, google: #dd4b39, twitter: #00aced);
     .caption {
       padding: 4px 9px;
     }
+
+    &.resource {
+      position: relative;
+    
+      .actions {
+        position:absolute;
+        top:0;
+        right:0;
+        padding:4px 2px;
+      }
+    }
+
+
   }
 }
 
@@ -370,4 +383,12 @@ $profiles: (facebook: #3b5998, google: #dd4b39, twitter: #00aced);
 .front-center {
   display: table;
   margin: auto;
+}
+
+.tags {
+  margin-bottom: 15px;
+}
+
+.tag {
+  
 }

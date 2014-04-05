@@ -2,6 +2,9 @@
 
 class Resource extends Eloquent
 {
+
+	use Conner\Tagging\Taggable;
+    
     // Album __belongs_to__ Artist
     public function projects()
     {

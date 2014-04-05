@@ -23,3 +23,7 @@ Route::get('projects/confirm/{id}', 'ProjectController@confirm');
 Route::get('resources/confirm/{id}', 'ResourceController@confirm');
 
 Route::get('projects/{id}/{slug?}', array('as' => 'project.show', 'uses' => 'ProjectController@show'));
+
+// Search Controller
+Route::get('tags/{slug}', array('as' => 'tag.show', 'uses' => 'SearchController@tag'));
+Route::get('search/{slug}', 'SearchController@search');

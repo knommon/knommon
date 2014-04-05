@@ -2,6 +2,8 @@
 
 class Project extends Eloquent {
 
+	use Conner\Tagging\Taggable;
+	
 	/**
 	 * The database table used by the model.
 	 *

@@ -8,10 +8,9 @@
   @if ($status = Session::get('status'))
     <div class="alert alert-success">{{ $status }}</div>
   @endif
-  <h1>{{ $project->title }}<small class="tagline"> {{ $project->tagline }}</small></h1>
-  <div class="about">
-    <p>{{{ $project->about }}}</p>
-  </div>
+  <h1>{{ $project->title }} <small class="tagline"> {{ $project->tagline }}</small></h1>
+  
+  {{-- Project actions depending on auth status--}}
   @if ($isMember)
     <p><a href="{{ action('ProjectController@edit', $project->id) }}" class="btn btn-default">Edit</a></p>
   @else
@@ -24,6 +23,19 @@
       @endif
     </div>
   @endif
+
+  <div class="about">
+    <p>{{{ $project->about }}}</p>
+  </div>
+  
+  {{-- display tags--}}  
+  <div class="tags">
+    @foreach($tags as $tag)
+    <span class="tag"><a href="{{ URL::route('tag.show', array('slug' => $tag['tag_slug'])) }}" class="btn btn-default">{{ $tag['tag_name'] }}</a></span>
+    @endforeach
+  </div>
+
+{{-- display team members--}}
   <div class="team">
     @foreach ($team as $member)
       <div class="member">
@@ -34,6 +46,10 @@
       </div>
     @endforeach
   </div>
+
+{{--display project resources --}}
+  <h2>Resources</h2>
+
   @if ($isMember)
     <div class="action">
       {{ Form::open(array('url' => action('ResourceController@create'), 'method' => 'get')) }}
@@ -58,7 +74,14 @@
                   <a href="{{ action('ResourceController@confirm', $resource->resource_id) }}" class="btn btn-danger">Delete</a>
                 </div>
               @endif
+
+              {{-- display tags + this is likely n+1--}}  
+            <div class="tags">
+                @foreach($resource->tagged()->get()->toArray() as $tag)
+                    <span class="tag"><a href="{{ URL::route('tag.show', array('slug' => $tag['tag_slug'])) }}" class="btn btn-default">{{ $tag['tag_name'] }}</a></span>
+                @endforeach
             </div>
+          </div>
         </div>
       @endforeach
     </div>

@@ -33,7 +33,7 @@ class ProjectResourceTask extends Migration {
 			$table->foreign('user_id')->references('id')->on('users');
 			$table->string('name');
 			if ($type != 'pgsql') {
-				$table->enum('type', $resource_types);
+				$table->enum('type', $resource_types)->nullable()->default(NULL);
 			}
 			$table->string('url', 2048);
 			$table->unsignedInteger('votes');

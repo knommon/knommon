@@ -39,7 +39,7 @@ public function run(){
 	$resource = new Resource();
 	$resource->name = "Laravel PHP framework";
 	$resource->url = "http://laravel.com/docs";
-	$resource->body = "\'the web framework for artisans\' that we are using for developing our site";
+	$resource->body = "'the web framework for artisans' that we are using for developing our site";
 	$resource->type = "Text"; //intentionally null
 	$resource->votes = 0;
 	$resource->user_id = 1;

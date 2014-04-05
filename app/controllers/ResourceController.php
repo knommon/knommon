@@ -125,6 +125,14 @@ class ResourceController extends Controller {
 
 		$resource->save();
 
+		//cycle through comma separated tag input and add the new tags and associate all the tags
+		$tags = explode(",", Input::get('tags'));
+
+		//is there a way to do this better? 
+		foreach ($tags as $tagname) {
+			$resource->tag($tagname);
+		}
+
 		if ($create) {
 			$project_id = Input::get('project');
 
@@ -139,7 +147,7 @@ class ResourceController extends Controller {
 				Log::error('Error inserting project_resource relation with query "' . $e->getSql() . '" with parameters ' . print_r($e->getBindings(), true));
 				return Redirect::to(URL::action('ResourceController@create') . '?project=' . Input::get('project'))
 					->with('error', 'Error! Could not create the resource.');
-			}
+		}
 
 			return Redirect::action('ProjectController@show', $project_id)
 				->with('status', 'Resource created successfully!');

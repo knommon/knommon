@@ -63,7 +63,8 @@ class ProjectController extends Controller {
 			'project' => $project, 
 			'team' => $team,
 			'isMember' => $isMember,
-			'follows' => $follows
+			'follows' => $follows,
+			'tags' => $project->tagged()->get(),
 		));
 	}
 
@@ -111,6 +112,7 @@ class ProjectController extends Controller {
 
 	/**
 	 * @todo: sanitize input
+	 * @todo: delete tags that no longer matter
 	 * Attemps to commit the edits on the project in Input, or returns to fail action
 	 * @param  Project $project    The project resource to modify
 	 * @param  boolean $create     If we're creating, false for editing
@@ -144,8 +146,9 @@ class ProjectController extends Controller {
 		//cycle through comma separated tag input and add the new tags and associate all the tags
 		$tags = explode(",", Input::get('tags'));
 
+		//is there a way to do this better? 
 		foreach ($tags as $tagname) {
-			
+			$project->tag($tagname);
 		}
 
 		return Redirect::action('ProjectController@show', $project->id)
