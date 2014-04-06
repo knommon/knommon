@@ -25,14 +25,16 @@
   </div>
   <div class="row">
     <h2 class="tagline">
-      What do you want to make?
+      What do you want to create?
     </h2>
     <div class="section">
       <div class="col-md-8" style="margin: 0 auto; float: none;">
         <form action="/projects" method="get">
-          <input type="text" class="form-control" placeholder="ex. Plant a Community Garden" style="margin-bottom:10px;" />
-          <a href="/projects" class="btn btn-danger">Browse Projects</a>
-          <a href="/projects/create" class="btn btn-default">Create Project</a>
+          <input type="text" class="form-control" placeholder="ex. Community Garden" style="margin-bottom:10px;" />
+          <div class="buttons">
+            <a href="/projects" class="btn btn-danger">Browse Projects</a>
+            <a href="/projects/create" class="btn btn-default">New Project</a>
+          </div>
         </form>
       </div>
     </div>
@@ -46,7 +48,7 @@
 <div class="section">
   <div class="row video">
     <div class="info">
-      <h3>The Knowledge Community</h3>
+      <h2 class="tagline">Community of Doers</h2>
       <p>If you are not willing to learn, no one can help you. If you are determined to learn, no one can stop you.</p>
     </div>
     
@@ -60,8 +62,8 @@
 
 <div class="section">
   <div class="row full-row gray">
-    <h3>What is Knommon?</h3>
-    <p>Knommon is a platform that connects you to groups of people with similar interests in your area. It's about fostering a community of people who explore what they want to do and provides the resources for them to do so.</p>
+    <h3>Knommon = Knowledge Community</h3>
+    <p>Knommon is a platform for creating and sharing projects. Connect with people to learn and grow, to build new things. <br> The Knommon community supports each other. We share useful and inspiring resources, help each other when we get stuck, and connect to build amazing things.</p>
   </div>
   <div class="row full-row">
     <h3>Why?</h3>
