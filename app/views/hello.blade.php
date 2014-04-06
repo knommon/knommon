@@ -14,17 +14,23 @@
       <h1 class="logo">knommon</h1>
     </div>
     <div class="col-md-4 col-sm-4">
+    @if (Auth::check())
+      <div class="signin text-center">
+      <a href="/user/profile/{{Auth::user()->id}}" class="btn">Welcome Back!</a>
+      </div>
+      @else
       <div class="signin"><a href="/user/login" class="btn">Sign In</a></div>
+      @endif
     </div>
   </div>
   <div class="row">
     <h2 class="tagline">
-      What do you want to do?
+      What do you want to make?
     </h2>
     <div class="section">
       <div class="col-md-8" style="margin: 0 auto; float: none;">
         <form action="/projects" method="get">
-          <input type="text" class="form-control" placeholder="Create a Website" style="margin-bottom:10px;" />
+          <input type="text" class="form-control" placeholder="ex. Plant a Community Garden" style="margin-bottom:10px;" />
           <a href="/projects" class="btn btn-danger">Browse Projects</a>
           <a href="/projects/create" class="btn btn-default">Create Project</a>
         </form>

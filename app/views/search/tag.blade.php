@@ -2,11 +2,12 @@
 
 @section('content')
 
-<h2>Projects tagged with {{ $tag }}</h2>
+
 
 @if ($projects->isEmpty())
-    <p>There are no projects with this tag! :(</p>
+    {{--<p>There are no projects with this tag! :(</p>--}}
 @else
+    <h2>Projects tagged with {{ $tag }}</h2>
     <div class="row tile-row projects">
         @foreach ($projects as $project)
           <div class="col-sm-6 col-md-4">
@@ -25,11 +26,12 @@
     </div>
 @endif
 
-<h2>Resources tagged with {{ $tag }}</h2>
+
 
 @if ($resources->isEmpty())
-    <p>There are no resources with this tag! :(</p>
+    {{--<p>There are no resources with this tag! :(</p>--}}
 @else
+<h2>Resources tagged with {{ $tag }}</h2>
     <div class="row tile-row projects">
         @foreach ($resources as $resource)
           <div class="col-sm-6 col-md-4">
@@ -51,6 +53,28 @@
         @endforeach
     </div>
 @endif
+
+@if (empty($skills))
+    {{--<p>There are no people with this skill tag! :(</p>  --}}
+@else
+<h2>People tagged with {{ $tag }}</h2>
+    <div class="row tile-row projects">
+        @foreach ($skills as $user)
+          <div class="col-sm-6 col-md-4">
+            <div class="thumbnail resource">
+              <img src="{{ $user->photo_url or '/images/profile-default.png' }}" width="150" height="150" />
+              <div class="caption">
+                <h3><a href="{{ action('UserController@getProfile', $user->id) }}" target="_blank">
+                {{{ $user->fname }}} {{{ $user->lname }}}
+                </a></h3>
+                <p>{{{ Str::limit($user->about, 180) }}}</p>
+              </div>
+            </div>
+          </div>
+        @endforeach
+    </div>
+@endif
+
 
 
 @stop

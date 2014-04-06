@@ -10,8 +10,17 @@ class SearchController extends Controller {
 
 	public function tag($slug){
 		$projects = Project::withTag($slug)->get();
-		$resources = Resource::withtag($slug)->get();
-		return View::make('search/tag', array('projects' => $projects, 'resources' => $resources, 'tag' => $slug));
+		$resources = Resource::withTag($slug)->get();
+		$skills = DB::table('users')->join('skills', 'users.id', '=', 'skills.user_id')
+			->join('tagging_tagged', 'taggable_id', '=', 'skills.id')
+			->where('tagging_tagged.tag_slug', '=', 'hello')->get();
+		
+		/*$interests = DB::table('users')->join('interests', 'users.id', '=', 'interests.user_id')
+			->join('tagging_tagged', 'taggable_id', '=', 'interests.id')
+			->where('tagging_tagged.tag_slug', '=', 'hello')->get();
+		*/
+		return View::make('search/tag', array('projects' => $projects, 'resources' => $resources, 'skills' => $skills,
+			/*'interests' => $interests,*/ 'tag' => $slug));
 	}
 
 }

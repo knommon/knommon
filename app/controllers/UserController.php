@@ -16,6 +16,8 @@ class UserController extends Controller {
 		$this->beforeFilter('auth', array('only' => array(
 			'getDashboard', 'getWelcome', 'getJoin', 'getLeave', 'getFollow', 'getUnfollow'
 		)));
+
+		$this->beforeFilter('auth.me', array('only' => 'postProfile'));
 	}
 
 	public function index() {
@@ -77,6 +79,17 @@ class UserController extends Controller {
 			$user->lname = Input::get('lname');
 			$user->email = Input::get('email');
 			$user->password = Hash::make(Input::get('password'));
+
+			$user->save();
+
+			$skills = new Skill;
+			$skills->user()->associate($user);
+			$skills->save();
+
+			$interests = new Interest;
+			$interests->user()->associate($user);
+			$interests->save();
+
 			$user->save();
 
 			$id = $user->id;
@@ -115,10 +128,55 @@ class UserController extends Controller {
 
 	//@todo: should this be /user/{id}/profile instead of /user/profile/{id} ?
 	public function getProfile($id) {
-		$user = User::findOrFail($id);
-		$currUser = Auth::user();
+		$me = Auth::user();
+		if ($id != $me->id) {
+			$user = User::findOrFail($id);
+			$canEdit = false;
+		} else {
+			$user = $me;
+			$canEdit = true;
+		}
+		$skills = $user->skills->tagged()->get();
+		$interests = $user->interests->tagged()->get();
+		$projects = $user->projects;
+		
+		return View::make('user.profile', array('user' => $user, 'canEdit' => $canEdit, 'skills' => $skills, 'projects' => $projects, 
+			'interests' => $interests));
+	}
 
-		return View::make('user.profile', array('user' => $user));
+	public function getEditProfile($id){
+		$user = Auth::user();
+		if ($user->id != $id) {
+			return Redirect::back()->with('error', 'Invalid user');
+		}
+
+		$skills = $user->skills->tagNames();
+		$interests = $user->interests->tagNames();
+
+		return View::make('user.edit', array('user' => $user, 'skills' => $skills, 'interests' => $interests));
+	}
+
+
+	public function postProfile($id) {
+		$user = Auth::user();
+		if ($user->id != $id) {
+			return Redirect::back()->with('error', 'Invalid user');
+		}
+
+		$user->about = e(Input::get('about'));
+
+		$skills = explode(",", Input::get('skills'));
+		foreach ($skills as $skill) {
+			$user->skills->tag($skill);
+		}
+
+		$interests = explode(",", Input::get('interests'));
+		foreach ($interests as $interest) {
+			$user->interests->tag($interest);
+		}
+
+		$user->save();
+		return Redirect::action('UserController@getProfile', $id)->with('status', "Edited successfully");
 	}
 
 	//@todo: make these all one post request, postProject/Subscribe with paramers for the method

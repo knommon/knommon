@@ -115,4 +115,15 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		return $this->belongsToMany('Project', 'follows');
 	}
 
+	//dumb naming conventions and rob being dumb about things - leave it alone unless we are switching the tag machine
+	public function skills()
+	{
+		return $this->hasOne('Skill');
+	}
+
+	public function interests()
+	{
+		return $this->hasOne('Interest');
+	}
+
 }
