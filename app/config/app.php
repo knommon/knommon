@@ -108,6 +108,8 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
 		'Felixkiss\UniqueWithValidator\UniqueWithValidatorServiceProvider',
+		'Illuminate\Remote\RemoteServiceProvider',
+		'Rocketeer\RocketeerServiceProvider',
 	),
 
 	/*
@@ -174,6 +176,7 @@ return array(
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
 
+		'Rocketeer' => 'Rocketeer\Facades\Rocketeer',
 	),
 
 );

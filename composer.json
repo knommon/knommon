@@ -9,7 +9,8 @@
 		"nesbot/Carbon": "*",
 		"felixkiss/uniquewith-validator": "1.0.*",
 		"jyggen/curl": "dev-master",
-		"rtconner/laravel-tagging": "dev-master"
+		"rtconner/laravel-tagging": "dev-master",
+		"anahkiasen/rocketeer": "dev-master"
 	},
 	"require-dev": {
 		"darsain/laravel-console": "dev-master",
@@ -44,5 +45,11 @@
 	"config": {
 		"preferred-install": "dist"
 	},
-	"minimum-stability": "stable"
+	"minimum-stability": "stable",
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/changwuf31/remote"
+		} 
+	]
 }

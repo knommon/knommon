@@ -16,6 +16,8 @@ app/config/mail.php
 public/components*
 bower_components/*
 node_modules/*
+.rocketeer
+app/config/packages/anahkiasen/rocketeer
 
 # Public
 public/images
@@ -28,7 +30,7 @@ app/assets/public/css/*
 app/assets/public/js/*
 public/packages/
 
-# Temporary files
+# Temporary files & folders
 .DS_Store
 Thumbs.db
 .sass-cache
