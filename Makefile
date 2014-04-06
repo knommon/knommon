@@ -15,6 +15,6 @@ dirs:
 	mkdir -p app/assets/public/css
 
 configs:
-	cp -n app/config/database.php.default app/config/database.php
-	cp -n app/config/mail.php.default app/config/mail.php
+	cp -n app/config/database.php.default app/config/local/database.php
+	cp -n app/config/mail.php.default app/config/local/mail.php
 

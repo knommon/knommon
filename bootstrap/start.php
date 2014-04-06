@@ -26,8 +26,8 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(array(
 
-	'local' => array('your-machine-name'),
-
+	'local' => array('Nicks-MacBook-Pro.local', 'Roberts-MacBook-Pro.local'),
+	'dev'   => array('dev.knommon.com')
 ));
 
 /*

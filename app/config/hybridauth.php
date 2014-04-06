@@ -4,15 +4,15 @@ return array(
 	"providers"  => array(
 		"Google"     => array(
 			"enabled"    => true,
-			"keys"       => array( "id" => "388329424484-jt3gq2u1rtjnbcvorp2e0sfsre25tc8o.apps.googleusercontent.com", "secret" => "z6poCBfPFwLiTXgI2AR54nfb"),
+			"keys"       => array( "id" => $_ENV['GOOGLE_ID'], "secret" => $_ENV['GOOGLE_SECRET']),
 			),
 		"Facebook"   => array(
 			"enabled"    => true,
-			"keys"       => array( "id" => "557395844368353", "secret" => "90aa8e19b850f356d94ce450a9b58356"),
+			"keys"       => array( "id" => $_ENV['FACEBOOK_ID'], "secret" => $_ENV['FACEBOOK_SECRET']),
 			),
 		"Twitter"    => array(
 			"enabled"    => false,
-			"keys"       => array( "key" => "ID", "secret" => "SECRET")
+			"keys"       => array( "key" => $_ENV['TWITTER_ID'], "secret" => $_ENV['TWITTER_SECRET'])
 			),
 		),
 	"debug_mode" => false,
