@@ -37,11 +37,10 @@ https://github.com/TheMonkeys/laravel-blade-cache-filter
 http://laravel.com/docs/queries#caching-queries
 
 Deploying:  
-http://code.tutsplus.com/tutorials/deploying-a-laravel-application-using-capistrano--net-35685
 
-http://rocketeer.autopergamene.eu/#toc23
+@see [rocketeer](http://rocketeer.autopergamene.eu/#toc23).
 
-@todo, see different environments:
-http://laravel.com/docs/configuration#environment-configuration
+Note: it would be nice to automate the build process after publishing with rocketeer.
 
-http://chrishayes.ca/blog/code/laravel-4-setting-utilizing-environments-environment-configuration
+This command needs to go in that:
+php artisan migrate --package=rtconner/laravel-tagging

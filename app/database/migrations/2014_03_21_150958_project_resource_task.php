@@ -26,7 +26,7 @@ class ProjectResourceTask extends Migration {
 			$table->string('tagline', 255);
 			$table->string('photo_url', 2048)->nullable()->default(null);
 			$table->unsignedInteger('location_id')->nullable();
-			$table->foreign('location_id')->references('id')->on('users');
+			$table->foreign('location_id')->references('id')->on('locations');
 			$table->timestamps();
 		});
 

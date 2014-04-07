@@ -129,7 +129,7 @@ class UserController extends Controller {
 	//@todo: should this be /user/{id}/profile instead of /user/profile/{id} ?
 	public function getProfile($id) {
 		$me = Auth::user();
-		if ($id != $me->id) {
+		if ($me !== null && $id != $me->id) {
 			$user = User::findOrFail($id);
 			$canEdit = false;
 		} else {
@@ -144,7 +144,7 @@ class UserController extends Controller {
 			'interests' => $interests));
 	}
 
-	public function getEditProfile($id){
+	public function getEdit($id){
 		$user = Auth::user();
 		if ($user->id != $id) {
 			return Redirect::back()->with('error', 'Invalid user');

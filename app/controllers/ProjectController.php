@@ -155,7 +155,8 @@ class ProjectController extends Controller {
 		//cycle through comma separated tag input and add the new tags and associate all the tags
 		$tags = explode(",", Input::get('tags'));
 
-		//is there a way to do this better? 
+		//@todo: is there a way to do this better? 
+		if (!empty($tags))
 		foreach ($tags as $tagname) {
 			$project->tag($tagname);
 		}

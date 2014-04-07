@@ -15,19 +15,19 @@ class Locations extends Migration {
 		// http://forumsarchive.laravel.io/viewtopic.php?id=5133
 		Schema::create('locations', function(Blueprint $table) {
 			$table->increments('id');
-			$table->string('street_number', 32);
-			$table->string('establishment', 128);
-			$table->string('route', 128);
-			$table->string('locality', 128);
-			$table->string('administrative_area_level_3', 128);
-			$table->string('administrative_area_level_2', 128);
+			$table->string('street_number', 32)->nullable();
+			$table->string('establishment', 128)->nullable();
+			$table->string('route', 128)->nullable();
+			$table->string('locality', 128)->nullable();
+			$table->string('administrative_area_level_3', 128)->nullable();
+			$table->string('administrative_area_level_2', 128)->nullable();
 			$table->string('administrative_area_level_1', 128);
 			$table->string('state', 4);
-			$table->string('country', 128);
+			$table->string('country', 128)->nullable();
 			$table->string('postal_code', 16);
 		});
 
-		DB::statement("ALTER TABLE locations ADD COLUMN position point;");
+		DB::statement("ALTER TABLE locations ADD COLUMN position point NOT NULL;");
 	}
 
 	/**
