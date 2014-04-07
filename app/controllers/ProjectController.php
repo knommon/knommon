@@ -173,6 +173,10 @@ class ProjectController extends Controller {
 		$location = $data->geometry->location;
 		$lat = $location->lat;
 		$lon = $location->lng;
+
+		// check for existing location with geopoint
+		//$location = Location::where('', '=', '')->get();
+		//http://laravel.com/docs/eloquent#query-scopes
 		
 		$location = new Location;
 		$location->position = array($lat, $lon);

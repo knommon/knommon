@@ -136,7 +136,11 @@ class SocialController extends Controller {
 			$errors = new MessageBag();
 			$errors->add('error', $msg);
 
-			return Redirect::back()->withErrors($errors);
+			try {
+				return Redirect::back()->withErrors($errors);
+			} catch(InvalidArgumentException $e) {
+				return Redirect::to('/')->withErrors($errors);
+			}
 		}
 	}
 
@@ -180,7 +184,7 @@ class SocialController extends Controller {
 	}
 
 	protected function getPhoto($provider, $photoURL, $size = 100) {
-		$url;
+		$url = '';
 		switch ($provider) {
 			case 'Google':
 				$parts = explode('?sz=', $photoURL);
@@ -202,6 +206,9 @@ class SocialController extends Controller {
 				$info = $request->getInfo();
 				$url = $info['url'];
 
+				break;
+			case 'Twitter':
+				$url = $photoURL;
 				break;
 		}
 

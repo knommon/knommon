@@ -11,7 +11,7 @@ return array(
 			"keys"       => array( "id" => $_ENV['FACEBOOK_ID'], "secret" => $_ENV['FACEBOOK_SECRET']),
 			),
 		"Twitter"    => array(
-			"enabled"    => false,
+			"enabled"    => true,
 			"keys"       => array( "key" => $_ENV['TWITTER_ID'], "secret" => $_ENV['TWITTER_SECRET'])
 			),
 		),

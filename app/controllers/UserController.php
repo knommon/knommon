@@ -129,7 +129,7 @@ class UserController extends Controller {
 	//@todo: should this be /user/{id}/profile instead of /user/profile/{id} ?
 	public function getProfile($id) {
 		$me = Auth::user();
-		if ($me !== null && $id != $me->id) {
+		if ($me == null || $id != $me->id) {
 			$user = User::findOrFail($id);
 			$canEdit = false;
 		} else {
