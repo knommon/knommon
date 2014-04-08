@@ -2,6 +2,8 @@
 
 use Jyggen\Curl\Curl;
 
+define('EPSILON', 0.0000001);
+
 class ProjectController extends Controller {
 
 	public function __construct() {
@@ -21,11 +23,10 @@ class ProjectController extends Controller {
 
 	/**
 	 * Show the form for creating a new project.
+	 * @todo: use javascript to poll the available created projects with similar titles nearby
 	 */
 	public function create() {
-		$response = Curl::get('http://www.telize.com/geoip')[0];
-		$data = json_decode($response->getContent());
-		return View::make('project/create', array('geoip' => $data));
+		return View::make('project/create');
 	}
 
 	/**
@@ -165,21 +166,28 @@ class ProjectController extends Controller {
 			->with('status', "Project " . ($create ? 'created' : 'updated') . " successfully!");
 	}
 
-	//@todo: check for duplicate locations
+	/**
+	 * Returns the location in the database with the given latitude and longitude,
+	 * creating one if none exists
+	 * @param  float $lat 
+	 * @param  float $lon
+	 */
 	public function createOrReturnLocation($lat, $lon) {
 		$response = Curl::get("http://maps.googleapis.com/maps/api/geocode/json?latlng={$lat},{$lon}&sensor=true")[0];
 		$data = array_shift(json_decode($response->getContent())->results);
 
-		$location = $data->geometry->location;
-		$lat = $location->lat;
-		$lon = $location->lng;
+		$pos = $data->geometry->location;
+		$position = array($pos->lat, $pos->lng);
 
-		// check for existing location with geopoint
-		//$location = Location::where('', '=', '')->get();
-		//http://laravel.com/docs/eloquent#query-scopes
-		
+		// check for existing location with geopoint using near to avoid rounding errors
+		$nearby = Location::near($position, EPSILON)->get();
+
+		if (count($nearby) > 0) {
+			return $nearby[0];
+		}
+
 		$location = new Location;
-		$location->position = array($lat, $lon);
+		$location->position = $position;
 
 		$str = '';
 		foreach ($data->address_components as $addr) {

@@ -69,6 +69,7 @@ class UserController extends Controller {
 		return View::make('user.register');
 	}
 
+	//@todo: refactor this & the SocialController to use query scopes - http://laravel.com/docs/eloquent#query-scopes
 	public function postCreate() {
 		$validator = Validator::make(Input::all(), User::$rules);
 
@@ -89,8 +90,6 @@ class UserController extends Controller {
 			$interests = new Interest;
 			$interests->user()->associate($user);
 			$interests->save();
-
-			$user->save();
 
 			$id = $user->id;
 

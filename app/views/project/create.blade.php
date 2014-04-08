@@ -37,9 +37,11 @@
             <label for="tags">Location</label>
             <div id="map"></div>
             <div id="map-canvas"></div>
-            <input id="pac-input" class="controls" type="text" placeholder="Search Box" value="{{ $geoip->city }}, {{ $geoip->region_code }} {{ $geoip->postal_code }}, {{ $geoip->country }} " onkeydown="if(event.keyCode == 13) { event.preventDefault(); return false; }" onclick="this.setSelectionRange(0, this.value.length);">
-            <input id="lat" type="hidden" name="latitude" value="{{ $geoip->latitude }}" />
-            <input id="lon" type="hidden" name="longitude" value="{{ $geoip->longitude }}" />
+            <input id="pac-input" class="controls" type="text" name="search" placeholder="Search Box"
+            onkeydown="if(event.keyCode == 13) { event.preventDefault(); return false; }"
+            onclick="this.setSelectionRange(0, this.value.length);" />
+            <input id="lat" type="hidden" name="latitude" />
+            <input id="lon" type="hidden" name="longitude" />
         </div>
         <input type="submit" value="Create" class="btn btn-primary" />
         <a href="{{ action('ProjectController@index') }}" class="btn btn-link">Cancel</a>
@@ -79,7 +81,7 @@
       #pac-input:focus {
         border-color: #4d90fe;
         margin-left: -1px;
-        padding-left: 14px;  /* Regular padding-left + 1. */
+        padding-left: 14px;
         width: 401px;
       }
 
@@ -103,26 +105,31 @@
     </style>
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places&key=AIzaSyBXVO4BKHWYxNneUCybbSDIAwojuUCboNk"></script>
 <script>
+var me;
+function getgeoip(json){ me = json; }
+
 function initialize() {
 
   var markers = [];
   var map = new google.maps.Map(document.getElementById('map-canvas'), {
-    center: new google.maps.LatLng({{ $geoip->latitude }}, {{ $geoip->longitude }}),
+    center: new google.maps.LatLng(me.latitude || 37.7577, me.longitude || -122.4376),
     zoom: 10,
     maxZoom: 17,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   });
 
   // Create the search box and link it to the UI element.
-  var input = /** @type {HTMLInputElement} */(
-      document.getElementById('pac-input'));
-  map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-
-  var searchBox = new google.maps.places.SearchBox(
-    /** @type {HTMLInputElement} */(input));
-
+  var input = document.getElementById('pac-input');
   var lat = document.getElementById('lat');
   var lon = document.getElementById('lon');
+
+  lat.value = me.latitude;
+  lon.value = me.longitude;
+  input.value = me.city + ', ' + me.region_code;
+
+  map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+  var searchBox = new google.maps.places.SearchBox(input);
+
   // [START region_getplaces]
   // Listen for the event fired when the user selects an item from the
   // pick list. Retrieve the matching places for that item.
@@ -176,4 +183,5 @@ function initialize() {
 }
 google.maps.event.addDomListener(window, 'load', initialize);
 </script>
+<script src="http://www.telize.com/geoip?callback=getgeoip"></script>
 @stop

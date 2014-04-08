@@ -112,9 +112,26 @@ class SocialController extends Controller {
 					$user->lname = $profile->lastName;
 					$user->email = $profile->email;
 					$user->password = null;
-					if ($profile->photoURL != null)
+					if ($profile->photoURL != null) {
 						$user->photo_url = $this->getPhoto($providerName, $profile->photoURL);
+					}
+					if (empty($user->lname)) {
+						$nameParts = split(' ', $user->fname, 2);
+						$user->fname = $nameParts[0];
+						$user->lname = (count($nameParts) > 1) ? $nameParts[1] : null;
+					}
+
 					$user->save();
+
+					//@todo: refactor Skill & Interests to take advantage of query scopes - http://laravel.com/docs/eloquent#query-scopes
+					$skills = new Skill;
+					$skills->user()->associate($user);
+					$skills->save();
+
+					$interests = new Interest;
+					$interests->user()->associate($user);
+					$interests->save();
+
 				} else if ($user->photo_url == null && $profile->photoURL != null) {
 					//we have a profile image to insert
 					$user->photo_url = $this->getPhoto($providerName, $profile->photoURL);
@@ -219,6 +236,7 @@ class SocialController extends Controller {
 		));
 	}
 
+	//@todo: save this photo to our server and set the link accordingly
 	protected function getPhoto($provider, $photoURL, $size = 100) {
 		$url = '';
 		switch ($provider) {
