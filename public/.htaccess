@@ -3,12 +3,16 @@
         Options -MultiViews
     </IfModule>
 
-	<IfModule mod_speling.c>
-		CheckCaseOnly On
-		CheckSpelling On
-	</IfModule>
+    <IfModule mod_speling.c>
+        CheckCaseOnly On
+        CheckSpelling On
+    </IfModule>
 
     RewriteEngine On
+
+    # force non-www urls
+    RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+    RewriteRule ^ http://%1%{REQUEST_URI} [L,R=301]
 
     # Redirect Trailing Slashes...
     RewriteRule ^(.*)/$ /$1 [L,R=301]

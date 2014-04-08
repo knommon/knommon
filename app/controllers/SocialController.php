@@ -5,6 +5,8 @@ include_once 'UserController.php';
 use Illuminate\Support\MessageBag;
 use Jyggen\Curl\Curl;
 
+define('INVALID_EMAIL_CODE', 10);
+
 /**
  * Defines social routes that can be used to register a new user,
  * login an existing user or add a social account to a signed in
@@ -31,11 +33,30 @@ class SocialController extends Controller {
 	}
 
 	public function getTwitter() {
-		return $this->attemptLogin('Twitter');
+		$email = (Auth::check()) ? Auth::user()->email : Session::get('email');
+
+		if (empty($email)) {
+			return View::make('social.email');
+		}
+
+		return $this->attemptLogin('Twitter', $email);
 	}
 
 	public function getGoogle() {
 		return $this->attemptLogin('Google');
+	}
+
+	public function postTwitter() {
+		$validator = Validator::make(Input::all(), ['email' => User::$rules['email']]);
+
+		if ($validator->fails()) {
+			$data = array('email' => Input::get('email'));
+			return Redirect::back()
+				->withErrors($validator)->withInput($data);
+		}
+		//@todo: send validation email?
+		Session::put('email', Input::get('email'));
+		return Redirect::back();
 	}
 
 	/**
@@ -46,8 +67,9 @@ class SocialController extends Controller {
 	 * profile exists in the database, then one is created and attached to this profile.
 	 * @param string $providerName the provider's name supported by HybridAuth exactly
 	 * with the first letter capital, and the rest lowercase
+	 * @param string $email the user's email if the social provider does not return one
 	 */
-	protected function attemptLogin($providerName) {
+	protected function attemptLogin($providerName, $email = null) {
 		Session::put('social_login', $providerName);
 
 		try {
@@ -70,9 +92,19 @@ class SocialController extends Controller {
 				//create new user if not logged in
 				$user = Auth::user();
 				// check emails to avoid duplicates
-				if ($user == null) {
+				if ($user == null && $profile->email != null) {
 					$user = User::where('email', $profile->email)->take(1)->first();
 				}
+				//get the default email if none exists
+				if ($profile->email == null) {
+					$validator = Validator::make(['email' => $email], ['email' => User::$rules['email']]);
+					if ($validator->passes()) {
+						$profile->email = $email;
+					} else {
+						throw new Exception($validator->messages()->first('email'), INVALID_EMAIL_CODE);
+					}
+				}
+				DB::beginTransaction();
 				// still can't find a user, create one
 				if ($user == null) {
 					$user = new User;
@@ -92,6 +124,7 @@ class SocialController extends Controller {
 				$id = $user->id;
 
 				$this->createAccount($id, $providerName, $profile, $token);
+				DB::commit();
 			} else {
 				$id = $result->user_id;
 				//update existing social account credentials
@@ -108,6 +141,7 @@ class SocialController extends Controller {
 			return Redirect::intended(LOGIN_LANDING);
 
 		} catch (Exception $e) {
+			DB::rollback();
 			$error = '';
 			switch( $code = $e->getCode() ){ 
 				case 0 : $error = "Unspecified error."; break;
@@ -131,6 +165,8 @@ class SocialController extends Controller {
 			$msg = "Internal error. Please try a different sign-in method.";
 			if ($code == 5 || $code == 6) {
 				$msg = "Error connecting to {$providerName}, please try again.";
+			} else if ($code == INVALID_EMAIL_CODE) {
+				$msg = $e->getMessage();
 			}
 
 			$errors = new MessageBag();
