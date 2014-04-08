@@ -16,8 +16,6 @@ class UserController extends Controller {
 		$this->beforeFilter('auth', array('only' => array(
 			'getDashboard', 'getWelcome', 'getJoin', 'getLeave', 'getFollow', 'getUnfollow'
 		)));
-
-		$this->beforeFilter('auth.me', array('only' => 'postProfile'));
 	}
 
 	public function index() {
@@ -69,7 +67,8 @@ class UserController extends Controller {
 		return View::make('user.register');
 	}
 
-	//@todo: refactor this & the SocialController to use query scopes - http://laravel.com/docs/eloquent#query-scopes
+	//@todo: refactor skills & interests on this & the SocialController
+	//@todo: include email confirmations
 	public function postCreate() {
 		$validator = Validator::make(Input::all(), User::$rules);
 
@@ -92,15 +91,6 @@ class UserController extends Controller {
 			$interests->save();
 
 			$id = $user->id;
-
-			// Laravel SQL Builder
-			// $id = DB::table('users')->insertGetId( array('email' => Input::get('email')) );
-
-			// raw SQL
-			/*$sql = "INSERT INTO users (fname, lname, email, password) VALUES (?, ?, ?, ?)"; //RETURNING id for postgres
-			$success = DB::insert($sql, array(Input::get('fname'), Input::get('lname'), Input::get('email'), Hash::make(Input::get('password')));
-			$id = DB::getPdo()->lastInsertId();
-			*/
 
 			Auth::loginUsingId($id);
 
@@ -143,10 +133,10 @@ class UserController extends Controller {
 			'interests' => $interests));
 	}
 
-	public function getEdit($id){
+	public function getEdit($id) {
 		$user = Auth::user();
-		if ($user->id != $id) {
-			return Redirect::back()->with('error', 'Invalid user');
+		if ($user == null || $user->id != $id) {
+			return Redirect::back()->with('error', 'You must be signed in.');
 		}
 
 		$skills = $user->skills->tagNames();
@@ -158,7 +148,7 @@ class UserController extends Controller {
 
 	public function postProfile($id) {
 		$user = Auth::user();
-		if ($user->id != $id) {
+		if ($user == null || $user->id != $id) {
 			return Redirect::back()->with('error', 'Invalid user');
 		}
 
@@ -175,12 +165,11 @@ class UserController extends Controller {
 		}
 
 		$user->save();
-		return Redirect::action('UserController@getProfile', $id)->with('status', "Edited successfully");
+		return Redirect::action('UserController@getProfile', $id)->with('status', "User profile updated successfully!");
 	}
 
 	//@todo: make these all one post request, postProject/Subscribe with paramers for the method
 	public function getJoin($id) {
-		//@todo: check project's access, if open register automatically otherwise request to join
 		Project::findOrFail($id);
 		if (Auth::user()->join($id)) {
 			return Redirect::action('ProjectController@show', $id)->with('status', "You joined successfully!");

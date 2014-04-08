@@ -73,7 +73,7 @@
     <div class="row">
       <div class="social-buttons social-buttons-register form-group">
         <a href="{{ URL::route('facebook') }}" class="btn facebook">Register with Facebook</a>
-        <a href="{{ URL::route('twitter') }}" class="btn twitter">Register with Twitter</a>
+        <a href="{{ URL::route('register.twitter') }}" class="btn twitter">Register with Twitter</a>
         <a href="{{ URL::route('google') }}" class="btn google">Register with Google</a>
         <span class="email-register"><a href="{{ url('user/register') }}">Or Register with Email</a></span>
       </div>

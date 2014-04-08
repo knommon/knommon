@@ -32,7 +32,18 @@ class SocialController extends Controller {
 		return $this->attemptLogin('Facebook');
 	}
 
+	/**
+	 * @precondition: requires that the use already has registered an account with Twitter
+	 */
 	public function getTwitter() {
+		return $this->attemptLogin('Twitter');
+	}
+
+	public function getGoogle() {
+		return $this->attemptLogin('Google');
+	}
+
+	public function registerTwitter() {
 		$email = (Auth::check()) ? Auth::user()->email : Session::get('email');
 
 		if (empty($email)) {
@@ -40,10 +51,6 @@ class SocialController extends Controller {
 		}
 
 		return $this->attemptLogin('Twitter', $email);
-	}
-
-	public function getGoogle() {
-		return $this->attemptLogin('Google');
 	}
 
 	public function postTwitter() {
@@ -60,7 +67,7 @@ class SocialController extends Controller {
 	}
 
 	/**
-	 * @todo find a way to use a ?continue query parameter to change the default redirect
+	 * @todo email verification where $email is set (for Twitter) and for gerneral account creation on UserController
 	 * 
 	 * Tries to authenticate the user with the given $providerName, if successful logs
 	 * the user in with the given social profile. If no user with a corresponding social

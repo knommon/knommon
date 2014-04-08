@@ -16,6 +16,7 @@ Route::controller('password', 'RemindersController');
 Route::controller('social', 'SocialController', array(
 	'getFacebook' => 'facebook', 'getTwitter' => 'twitter', 'getGoogle' => 'google',
 ));
+Route::get('register/twitter', array('as' => 'register.twitter', 'uses' => 'SocialController@registerTwitter'));
 
 // Project & Resource routes
 Route::resource('projects', 'ProjectController');
