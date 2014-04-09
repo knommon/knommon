@@ -11,15 +11,30 @@
 |
 */
 
+//@todo: leverage browser caching
 App::before(function($request)
 {
-	//
+	//Response::header('Cache-Control', 'nocache, no-store, max-age=0, must-revalidate');
+	//Response::header('Pragma', 'no-cache');
+	//Response::header('Expires', 'Fri, 01 Jan 1990 00:00:00 GMT');
 });
 
 
 App::after(function($request, $response)
 {
-	//
+	// HTML Minification
+	if (App::Environment() != 'local') {
+		if ($response instanceof Illuminate\Http\Response) { 
+			$output = $response->getOriginalContent();
+			// Clean comments
+			//$output = preg_replace('/<!--([^\[|(<!)].*)/', '', $output);
+			//$output = preg_replace('/(?<!\S)\/\/\s*[^\r\n]*/', '', $output);
+			// Clean Whitespace
+			$output = preg_replace('/\s{2,}/', '', $output);
+			$output = preg_replace('/(\r?\n)/', '', $output);
+			$response->setContent($output);
+		}
+	}
 });
 
 /*
@@ -43,8 +58,8 @@ Route::filter('auth.basic', function()
 	return Auth::basic();
 });
 
-//@todo: there may be a redirect loop here when project_id is not defined
-Route::filter('auth.access', function($route, $request, $mode = 'project') {
+Route::filter('auth.access', function($route, $request, $mode = 'project')
+{
 	if (Auth::guest()) return Redirect::guest('user/login');
 
 	$user = Auth::user();
@@ -53,6 +68,7 @@ Route::filter('auth.access', function($route, $request, $mode = 'project') {
 	$action = array_pop($action);
 	if (!$action) $action = 'edit';
 	//die(Route::getCurrentRoute()->getPath());
+	//$param = Request::segment(1);
 	switch ($mode) {
 		case 'project':
 			//try to find a project id from eithe the URL or the input project_id field
@@ -130,5 +146,26 @@ Route::filter('csrf', function()
 	if (Session::token() != Input::get('_token'))
 	{
 		throw new Illuminate\Session\TokenMismatchException;
+	}
+});
+
+/**
+ * Cache Filters
+ * http://markvaneijk.com/caching-routes-using-filters-in-laravel-4
+ * 
+ * ex. Route::get('/', array('before' => 'cache', 'after' => 'cache', 'uses' => 'HomeController@show'));
+ * @todo: leverage caching on more than just static pages, and use Cache::forget($key) when a specific 
+ * page is modified
+ * @todo: implement caching backend Memcahced, Redis, etc.
+ */
+Route::filter('cache', function($route, $request, $response = null)
+{
+	$key = 'route-'.Str::slug(Request::url());
+
+	if (is_null($response) && Cache::has($key)) {
+		return Cache::get($key);
+	}
+	elseif (!is_null($response) && !Cache::has($key)) {
+		Cache::put($key, $response->getContent(), $minutes = 30);
 	}
 });

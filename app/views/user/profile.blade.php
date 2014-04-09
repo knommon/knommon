@@ -10,7 +10,9 @@
 	</div>
 
 	<h1 class="title">{{ $user->fname }} {{ $user->lname }}</h1>
+	@if ($canEdit)
 	<a href="{{ action('UserController@getEdit', $user->id ) }}" class="btn btn-primary">Edit</a>
+	@endif
 	@if ($user->about)
 	<h3>About me</h3>
 		<p> {{ $user->about }} </p>		

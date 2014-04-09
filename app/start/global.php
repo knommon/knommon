@@ -2,6 +2,10 @@
 
 include_once 'functions.php';
 
+if (App::environment('local')) {
+	Cache::flush();
+}
+
 /*
 |--------------------------------------------------------------------------
 | Register The Laravel Class Loader
@@ -65,6 +69,7 @@ App::error(function(Exception $exception, $code)
 |
 */
 
+//@todo: create a maintenance mode view
 App::down(function()
 {
 	return Response::make("Be right back!", 503);

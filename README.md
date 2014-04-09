@@ -36,6 +36,9 @@ https://github.com/TheMonkeys/laravel-blade-cache-filter
 
 http://laravel.com/docs/queries#caching-queries
 
+### Cache Busting
+https://github.com/MetalMatze/laravel-html-cachebusting
+
 Deploying:  
 
 @see [rocketeer](http://rocketeer.autopergamene.eu/#toc23).
