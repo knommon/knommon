@@ -23,6 +23,7 @@ App::before(function($request)
 App::after(function($request, $response)
 {
 	// HTML Minification
+	// @todo: fix this from causing errors in HTML display and JS on projects/create page
 	if (App::Environment() != 'local') {
 		if ($response instanceof Illuminate\Http\Response) { 
 			$output = $response->getOriginalContent();
@@ -30,8 +31,8 @@ App::after(function($request, $response)
 			//$output = preg_replace('/<!--([^\[|(<!)].*)/', '', $output);
 			//$output = preg_replace('/(?<!\S)\/\/\s*[^\r\n]*/', '', $output);
 			// Clean Whitespace
-			$output = preg_replace('/\s{2,}/', '', $output);
-			$output = preg_replace('/(\r?\n)/', '', $output);
+			//$output = preg_replace('/\s{2,}/', '', $output);
+			//$output = preg_replace('/(\r?\n)/', '', $output);
 			$response->setContent($output);
 		}
 	}
@@ -157,6 +158,7 @@ Route::filter('csrf', function()
  * @todo: leverage caching on more than just static pages, and use Cache::forget($key) when a specific 
  * page is modified
  * @todo: implement caching backend Memcahced, Redis, etc.
+ * @todo: use a user-dependent caching method
  */
 Route::filter('cache', function($route, $request, $response = null)
 {

@@ -28,9 +28,9 @@
       What do you want to create?
     </h2>
     <div class="section">
-      <div class="col-md-8" style="margin: 0 auto; float: none;">
+      <div class="search col-md-8">
         <form action="/projects" method="get">
-          <input type="text" class="form-control" placeholder="ex. Community Garden" style="margin-bottom:10px;" />
+          <input type="text" class="form-control" placeholder="ex. Community Garden" />
           <div class="buttons">
             <a href="/projects" class="btn btn-danger">Browse Projects</a>
             <a href="/projects/create" class="btn btn-default">New Project</a>
@@ -67,8 +67,7 @@
   </div>
   <div class="row full-row">
     <h3>Why?</h3>
-    <p>You don't need a degree to build great things. In the real world, there aren't any tests. There's no grading and there's certainly no failing. All you have is what you can do with what you know.
-    <i>What would you do if you knew you couldn't fail?</i></p>
+    <p>You don't need a degree to build great things. In the real world, there aren't any tests. There's no grading and there's certainly no failing. All you have is what you can do with what you know. <i>What would you do if you knew you couldn't fail?</i></p>
 
     <div class="row">
       <div class="social-buttons social-buttons-register form-group">

@@ -6,6 +6,7 @@ use Illuminate\Support\MessageBag;
 use Jyggen\Curl\Curl;
 
 define('INVALID_EMAIL_CODE', 10);
+define('EMAIL_TAKEN_CODE', 11);
 
 /**
  * Defines social routes that can be used to register a new user,
@@ -36,7 +37,10 @@ class SocialController extends Controller {
 	 * @precondition: requires that the use already has registered an account with Twitter
 	 */
 	public function getTwitter() {
-		return $this->attemptLogin('Twitter');
+		$email = null;
+		if (($user = Auth::user()) !== null) $email = $user->email;
+
+		return $this->attemptLogin('Twitter', $email);
 	}
 
 	public function getGoogle() {
@@ -68,6 +72,7 @@ class SocialController extends Controller {
 
 	/**
 	 * @todo email verification where $email is set (for Twitter) and for gerneral account creation on UserController
+	 * @todo if user is not logged in treat as email already registered
 	 * 
 	 * Tries to authenticate the user with the given $providerName, if successful logs
 	 * the user in with the given social profile. If no user with a corresponding social
@@ -96,24 +101,21 @@ class SocialController extends Controller {
 			$id;
 			//couldn't find an account in the database
 			if (count($result) == 0) {
-				//create new user if not logged in
-				$user = Auth::user();
-				// check emails to avoid duplicates
-				if ($user == null && $profile->email != null) {
-					$user = User::where('email', $profile->email)->take(1)->first();
-				}
 				//get the default email if none exists
-				if ($profile->email == null) {
-					$validator = Validator::make(['email' => $email], ['email' => User::$rules['email']]);
-					if ($validator->passes()) {
-						$profile->email = $email;
-					} else {
-						throw new Exception($validator->messages()->first('email'), INVALID_EMAIL_CODE);
-					}
-				}
+				if ($profile->email == null) $profile->email = $email;
+
+				//get the logged in user
+				$user = Auth::user();
+				
 				DB::beginTransaction();
 				// still can't find a user, create one
 				if ($user == null) {
+					// check if this email already exists
+					$exists = User::where('email', $profile->email)->take(1)->first();
+					if (!empty($exists)) {
+						throw new Exception('Email is already registered, please login to your existing account to add a new social profile.', INVALID_EMAIL_CODE);
+					}
+
 					$user = new User;
 					$user->fname = $profile->firstName;
 					$user->lname = $profile->lastName;
@@ -189,7 +191,7 @@ class SocialController extends Controller {
 			$msg = "Internal error. Please try a different sign-in method.";
 			if ($code == 5 || $code == 6) {
 				$msg = "Error connecting to {$providerName}, please try again.";
-			} else if ($code == INVALID_EMAIL_CODE) {
+			} else if ($code == INVALID_EMAIL_CODE || $code == EMAIL_TAKEN_CODE) {
 				$msg = $e->getMessage();
 			}
 

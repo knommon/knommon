@@ -1,12 +1,12 @@
 <?php
 
 // General pages
-Route::group(array('before' => 'cache', 'after' => 'cache'), function()
-{
+//Route::group(array('before' => 'cache', 'after' => 'cache'), function()
+//{
 	Route::get('/', function() { return View::make('hello'); });
 	Route::get('/about', function() { return View::make('about'); });
 	Route::get('/contact', function() {return View::make('contact'); });
-});
+//});
 
 // Patterns
 Route::pattern('id', '\d+');

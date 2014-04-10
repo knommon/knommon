@@ -55,6 +55,10 @@ q {
   }
 }
 
+.btn {
+  margin: 0 8px 8px 0;
+}
+
 .home div.row {
   margin: 0;
 }
@@ -152,9 +156,18 @@ q {
     }
 
     .btn {
-      margin-bottom: 8px;
+      margin: 0 8px 8px 0;
       border:none;
       padding: 8px 14px;
+    }
+  }
+
+  .search {
+    margin: 0 auto;
+    float: none;
+
+    input[type="text"] {
+      margin-bottom: 10px;
     }
   }
 }

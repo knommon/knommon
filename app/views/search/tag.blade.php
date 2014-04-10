@@ -61,8 +61,8 @@
     <div class="row tile-row projects">
         @foreach ($skills as $user)
           <div class="col-sm-6 col-md-4">
-            <div class="thumbnail resource">
-              <img src="{{ $user->photo_url or '/images/profile-default.png' }}" width="150" height="150" />
+            <div class="thumbnail user">
+              <img src="{{ $user->photo_url or '/images/profile-default.png' }}" width="100" height="100" />
               <div class="caption">
                 <h3><a href="{{ action('UserController@getProfile', $user->id) }}" target="_blank">
                 {{{ $user->fname }}} {{{ $user->lname }}}

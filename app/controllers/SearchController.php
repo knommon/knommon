@@ -13,11 +13,11 @@ class SearchController extends Controller {
 		$resources = Resource::withTag($slug)->get();
 		$skills = DB::table('users')->join('skills', 'users.id', '=', 'skills.user_id')
 			->join('tagging_tagged', 'taggable_id', '=', 'skills.id')
-			->where('tagging_tagged.tag_slug', '=', 'hello')->get();
+			->where('tagging_tagged.tag_slug', '=', $slug)->get();
 		
 		/*$interests = DB::table('users')->join('interests', 'users.id', '=', 'interests.user_id')
 			->join('tagging_tagged', 'taggable_id', '=', 'interests.id')
-			->where('tagging_tagged.tag_slug', '=', 'hello')->get();
+			->where('tagging_tagged.tag_slug', '=', $slug)->get();
 		*/
 		
 		//Prettify the tag for display

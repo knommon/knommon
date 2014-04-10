@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration {
 			$table->string('photo_url', 2048)->nullable()->default(null);
 			$table->string('confirmation', 255)->nullable()->default(null);
 			$table->boolean('confirmed')->default(false);
+			$table->boolean('blocked')->default(false);
 			$table->timestamps();
 		});
 	}

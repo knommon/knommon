@@ -142,8 +142,10 @@ class ProjectController extends Controller {
 
 			$lat = Input::get('latitude');
 			$lon = Input::get('longitude');
-			$location = $this->createOrReturnLocation($lat, $lon);
-			$project->location_id = $location->id;
+			if (!empty($lat) && !empty($lon)) {
+				$location = $this->createOrReturnLocation($lat, $lon);
+				$project->location_id = $location->id;
+			}
 		}
 
 		$project->save();
